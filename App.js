@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet} from 'react-native';
 import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { color } from 'react-native-reanimated';
+
 
 /**
  * Function for the dashboard page for the application.
@@ -15,10 +15,7 @@ import { color } from 'react-native-reanimated';
 function Dashboard() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>There is where the dashboard content will go</Text>
-
-      <Button title="" onPress={() => navigation.navigate('Settings')} />
-      
+      <Text>There is where the dashboard content will go</Text>  
     </View>
   );
 }
@@ -32,7 +29,6 @@ function Settings(){
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>There is where the settings content will go</Text>
-      <Button title="" onPress= {() => navigation.navigate('Dashboard')}/>
     </View>
   );
 }
@@ -41,7 +37,6 @@ function Camera(){
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>There is where the camera content will go</Text>
-      <Button title="" onPress= {() => navigation.navigate('Dashboard')}/>
     </View>
   );
 }
@@ -50,14 +45,11 @@ function addNote(){
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>There is where the notes content will go</Text>
-      <Button title="" onPress= {() => navigation.navigate('Dashboard')}/>
     </View>
   );
 }
 
-const nav = createNativeStackNavigator();
 const fixedMenu = createBottomTabNavigator();
-
 
 /**
  * Function works with the Master head and fixed menu of all the pages.
@@ -67,35 +59,60 @@ const fixedMenu = createBottomTabNavigator();
 function App() {
   return (
     <NavigationContainer>
-      {/* <nav.Navigator>
-        <nav.Screen name="Dashboard" component={Dashboard} />
-      </nav.Navigator> */}
-      <fixedMenu.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
 
-            if (route.name === 'Dashboard') {
-              iconName = focused ? 'ios-home' : 'md-home';
-            } else if (route.name === 'Camera'){
-              iconName = focused ? 'ios-camera' : 'md-camera';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'ios-settings' : 'md-settings';
-            } else if (route.name === 'addNote'){
-              iconName = focused ? 'ios-add-circle' : 'md-add-circle';
-            }
+      <fixedMenu.Navigator>
 
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
+      <fixedMenu.Screen
+        name="Dashbord"
+        component={Dashboard}
+        options={{
+          tabBarLabel: 'Dashboard',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="ios-home" color={color} size={26} />
+          ),
           tabBarActiveTintColor: '#80ccff',
           tabBarInactiveTintColor: 'gray',
-        })}
-      >
-        <fixedMenu.Screen name = "Dashboard" component={Dashboard}/>
-        <fixedMenu.Screen name = "Add Photo" component={Camera}/>
-        <fixedMenu.Screen name = "Settings" component={Settings}/>
-        <fixedMenu.Screen name = "Add Note" component={addNote} />
+        }}
+      />
+
+      <fixedMenu.Screen
+        name="Camera"
+        component={Camera}
+        options={{
+          tabBarLabel: 'Add Photo',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="ios-camera" color={color} size={26} />
+          ),
+          tabBarActiveTintColor: '#80ccff',
+          tabBarInactiveTintColor: 'gray',
+        }}
+      />
+
+      <fixedMenu.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="ios-settings" color={color} size={26} />
+          ),
+          tabBarActiveTintColor: '#80ccff',
+          tabBarInactiveTintColor: 'gray',
+        }}
+      />
+
+      <fixedMenu.Screen
+        name="Note"
+        component={addNote}
+        options={{
+          tabBarLabel: 'Add Notes',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="ios-add-circle" color={color} size={26} />
+          ),
+          tabBarActiveTintColor: '#80ccff',
+          tabBarInactiveTintColor: 'gray',
+        }}
+      />
         
       </fixedMenu.Navigator>
     </NavigationContainer>
