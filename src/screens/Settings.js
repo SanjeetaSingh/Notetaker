@@ -7,10 +7,11 @@ import { View, Text, StyleSheet} from 'react-native';
  * 
  * @returns the contents of the page.
  */
- function Settings(){
+ const setting = function(){
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>There is where the settings content will go</Text>
       </View>
     );
   }
+  export default setting; 
