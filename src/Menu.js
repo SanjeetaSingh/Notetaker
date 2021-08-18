@@ -57,7 +57,7 @@ export default function Menu() {
             options={{
               tabBarLabel:'Add Notes',
               tabBarIcon: ({ color }) => (
-                <Ionicons name="ios-camera" color={color} size={26} />
+                <Ionicons name="ios-add-circle" color={color} size={26} />
               ),
               tabBarActiveTintColor: '#80ccff',
               tabBarInactiveTintColor: 'gray',
