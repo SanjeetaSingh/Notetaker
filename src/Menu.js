@@ -1,8 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { View, Text, StyleSheet} from 'react-native';
 import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -11,10 +9,7 @@ import camera from './screens/Photo';
 import addNote from './screens/Editior';
 import setting from './screens/Settings';
 
-
-
 const Tab = createBottomTabNavigator();
-
 
 export default function Menu() {
   return (
