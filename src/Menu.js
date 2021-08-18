@@ -7,6 +7,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import dashboard from './screens/Dashboard'
+import camera from './screens/Photo';
+import addNote from './screens/Editior';
+import setting from './screens/Settings';
 
 
 
@@ -21,14 +24,50 @@ export default function Menu() {
             name="Dashboard"
             component={dashboard}
             options={{
-              tabBarLabel: 'Dashboard',
+              tabBarLabel:'Dashboard',
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-home" color={color} size={26} />
               ),
               tabBarActiveTintColor: '#80ccff',
               tabBarInactiveTintColor: 'gray',
             }}
-          />
+      />
+      <Tab.Screen
+            name="Camera"
+            component={camera}
+            options={{
+              tabBarLabel:'Camera',
+              tabBarIcon: ({ color }) => (
+                <Ionicons name="ios-camera" color={color} size={26} />
+              ),
+              tabBarActiveTintColor: '#80ccff',
+              tabBarInactiveTintColor: 'gray',
+            }}
+      />
+      <Tab.Screen
+            name="Setting"
+            component={setting}
+            options={{
+              tabBarLabel:'Setting',
+              tabBarIcon: ({ color }) => (
+                <Ionicons name="ios-settings" color={color} size={26} />
+              ),
+              tabBarActiveTintColor: '#80ccff',
+              tabBarInactiveTintColor: 'gray',
+            }}
+      />
+      <Tab.Screen
+            name="Add Note"
+            component={addNote}
+            options={{
+              tabBarLabel:'Add Notes',
+              tabBarIcon: ({ color }) => (
+                <Ionicons name="ios-camera" color={color} size={26} />
+              ),
+              tabBarActiveTintColor: '#80ccff',
+              tabBarInactiveTintColor: 'gray',
+            }}
+      />
       </Tab.Navigator>
     </NavigationContainer>
   );
