@@ -18,11 +18,4 @@ import { View, Text, StyleSheet} from 'react-native';
   }
   export default dashboard;
 
-
-  function Camera(){
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>There is where the camera content will go</Text>
-      </View>
-    );
-  }
+  
