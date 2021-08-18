@@ -24,7 +24,7 @@ const dashboard = () => {
         data={Data}
         initialNumToRender={4}
         renderItem={({ item }) => <Item title={item.title} />}
-        keyExtractor= {(item) => (item.key)} 
+        keyExtractor = { (item, index) => index.toString()}
         getItemCount={getItemCount}
         getItem={getItem}
       />
