@@ -2,7 +2,6 @@ import 'react-native-gesture-handler';
 import React, { useRef, useState } from "react";
 import { StyleSheet, Text, ScrollView } from "react-native";
 import {actions, defaultActions, RichEditor, RichToolbar,} from "react-native-pell-rich-editor";
-import HTMLView from "react-native-htmlview";
 
 /**
  * Fuction lets the user add notes to the application.
@@ -11,7 +10,7 @@ import HTMLView from "react-native-htmlview";
  */
 const addNote = function() {
   const RichText = useRef(); //reference to the RichEditor component
-  const [article, setArticle] = useState("");
+  const [setArticle] = useState("");
 
   /**
    * Add images from the gallery
@@ -52,7 +51,6 @@ const addNote = function() {
           actions.setStrikethrough,
           actions.heading1,
           actions.heading2,  
-          actions.insertVideo,
         ]}
         // creating icons for actions on toolbar
         iconMap={{
@@ -65,8 +63,7 @@ const addNote = function() {
         }}
         insertVideo={insertVideo}
       />
-      <RichEditor
-      //The rich text editor setup
+       <RichEditor
         disabled={false}
         containerStyle={styles.editor}
         ref={RichText}
@@ -74,7 +71,7 @@ const addNote = function() {
         placeholder={"Start Writing Here"}
         onChange={(text) => setArticle(text)}
       />
-      <HTMLView value={article} stylesheet={styles} />
+      
     </ScrollView>
   );
 };
