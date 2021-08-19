@@ -9,18 +9,18 @@ import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
  * @returns the text editor that the user uses to create notes.
  */
 const addNote = function() {
-  
   const _editor = React.createRef();
   return (
     <SafeAreaView style={styles.root}>
       <StatusBar style="auto" />
+      <QuillToolbar editor={_editor} options="full" theme="light"/>
       <QuillEditor
           style={styles.editor}
           ref={_editor}
-        />
-      <QuillToolbar editor={_editor} options="full" theme="light"/>
+        />   
     </SafeAreaView>
   );
+  
 }
 
 const styles = StyleSheet.create({
@@ -31,18 +31,17 @@ const styles = StyleSheet.create({
   },
   root: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    marginBottom: StatusBar.currentHeight,
     backgroundColor: '#eaeaea',
   },
   editor: {
     flex: 1,
-    padding: 0,
+    padding: 1,
     borderColor: 'gray',
     borderWidth: 2,
-    marginHorizontal: 30,
-    marginVertical: 5,
+    marginHorizontal: 25,
+    marginVertical: 10,
     backgroundColor: 'white',
-    
   },
 });
   
