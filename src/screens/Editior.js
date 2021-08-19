@@ -13,16 +13,38 @@ const addNote = function() {
   const RichText = useRef(); //reference to the RichEditor component
   const [article, setArticle] = useState("");
 
+  /**
+   * Add images from the gallery
+   */
+  function onPressAddImage() {
+    //currently incomplete 
+    RichText.current?.insertImage(
+      
+    );
+  }
+
+  /**
+   * Add videos from the gallery
+   */
+  function insertVideo() {
+    //Currently incomplete
+    RichText.current?.insertVideo(
+    );
+  }
+
   return (
     <ScrollView style={styles.container}>
       <RichToolbar
+      //The tool bar attributes for the editor
         style={[styles.richBar]}
         editor={RichText}
         disabled={false}
         iconTint={"#000"}
         selectedIconTint={"#80ccff"}
         disabledIconTint={"#80ccff"}
+        onPressAddImage={onPressAddImage}
         iconSize={20}
+        //The things that will be inclued in the toolbar
         actions={[
           ...defaultActions,
           actions.insertOrderedList,
@@ -30,8 +52,9 @@ const addNote = function() {
           actions.setStrikethrough,
           actions.heading1,
           actions.heading2,  
+          actions.insertVideo,
         ]}
-        // map icons for self made actions
+        // creating icons for actions on toolbar
         iconMap={{
           [actions.heading1]: ({ tintColor }) => (
             <Text style={[styles.tib, { color: tintColor }]}>H1</Text>
@@ -40,8 +63,10 @@ const addNote = function() {
             <Text style={[styles.tib, { color: tintColor }]}>H2</Text>
           ),
         }}
+        insertVideo={insertVideo}
       />
       <RichEditor
+      //The rich text editor setup
         disabled={false}
         containerStyle={styles.editor}
         ref={RichText}
@@ -57,6 +82,15 @@ const addNote = function() {
 export default addNote;
 
 const styles = StyleSheet.create({
+  /* styles for html tags */
+  a: {
+    fontWeight: "bold",
+    color: "#000",
+  },
+  p: {
+    fontSize: 30,
+  },
+
   container: {
     flex: 1,
     marginTop: 0,
@@ -78,9 +112,14 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#F5FCFF",
   },
+  text: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
   tib: {
     textAlign: "center",
     color: "#515156",
   },
+
 });
 
