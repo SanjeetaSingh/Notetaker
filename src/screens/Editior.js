@@ -79,15 +79,6 @@ const addNote = function() {
 export default addNote;
 
 const styles = StyleSheet.create({
-  /* styles for html tags */
-  a: {
-    fontWeight: "bold",
-    color: "#000",
-  },
-  p: {
-    fontSize: 30,
-  },
-
   container: {
     flex: 1,
     marginTop: 0,
