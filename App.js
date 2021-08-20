@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet} from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
+import {StyleSheet} from 'react-native';
 import Menu from "../notetaking-app/src/Menu"
 
 
