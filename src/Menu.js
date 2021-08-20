@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Button, Alert} from 'react-native';
 
 import dashboard from './screens/Dashboard'
 import camera from './screens/Photo';
@@ -25,7 +26,9 @@ export default function Menu() {
               ),
               tabBarActiveTintColor: '#80ccff',
               tabBarInactiveTintColor: 'gray',
+              
             }}
+            
       />
       <Tab.Screen
             name="Camera"
@@ -59,6 +62,13 @@ export default function Menu() {
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-add-circle" color={color} size={26} />
               ),
+                headerLeft: () => (
+                <Button
+                    onPress={() => Alert.alert('Are sure you want to leave')}
+                    title="Back"
+                    color="#80ccff"
+                 />
+                ),
               tabBarActiveTintColor: '#80ccff',
               tabBarInactiveTintColor: 'gray',
             }}
