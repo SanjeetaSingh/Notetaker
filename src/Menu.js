@@ -12,14 +12,22 @@ import setting from './screens/Settings';
 
 const Tab = createBottomTabNavigator();
 
-export default function Menu() {
+const Menu = function() {
+
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={{ headerShown: true }}>
       <Tab.Screen
             name="Dashboard"
             component={dashboard}
             options={{
+              headerStyle: {
+                backgroundColor: '#80ccff',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 25,
+              },
               tabBarLabel:'Dashboard',
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-home" color={color} size={26} />
@@ -31,9 +39,16 @@ export default function Menu() {
             
       />
       <Tab.Screen
-            name="Camera"
+            name="Add Photo"
             component={camera}
             options={{
+              headerStyle: {
+                backgroundColor: '#80ccff',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 25,
+              },
               tabBarLabel:'Camera',
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-camera" color={color} size={26} />
@@ -43,9 +58,16 @@ export default function Menu() {
             }}
       />
       <Tab.Screen
-            name="Setting"
+            name="Settings"
             component={setting}
             options={{
+              headerStyle: {
+                backgroundColor: '#80ccff',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 25,
+              },
               tabBarLabel:'Setting',
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-settings" color={color} size={26} />
@@ -58,6 +80,14 @@ export default function Menu() {
             name="Editor"
             component={addNote}
             options={{
+              headerStyle: {
+                backgroundColor: '#80ccff',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 25,
+              },
+              
               tabBarLabel:'Add Notes',
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-add-circle" color={color} size={26} />
@@ -66,7 +96,7 @@ export default function Menu() {
                 <Button
                     onPress={() => Alert.alert('Are sure you want to leave')}
                     title="Back"
-                    color="#80ccff"
+                    color="#000"
                  />
                 ),
               tabBarActiveTintColor: '#80ccff',
@@ -77,3 +107,5 @@ export default function Menu() {
     </NavigationContainer>
   );
 }
+
+export default Menu;
