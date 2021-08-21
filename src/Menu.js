@@ -7,7 +7,7 @@ import { Button, Alert} from 'react-native';
 
 import dashboard from './screens/Dashboard'
 import camera from './screens/Photo';
-import addNote from './screens/Editior';
+import addNote from './screens/Editor';
 import setting from './screens/Settings';
 
 const Tab = createBottomTabNavigator();
@@ -55,7 +55,7 @@ export default function Menu() {
             }}
       />
       <Tab.Screen
-            name="Add Note"
+            name="Editor"
             component={addNote}
             options={{
               tabBarLabel:'Add Notes',
