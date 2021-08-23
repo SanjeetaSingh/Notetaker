@@ -4,7 +4,7 @@ import {NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { MainNavigator, PhotoNavigator, SettingsNavigator, NotesNavigator } from '../navigation/Routing'
+import { MainNavigator, PhotoNavigator, SettingsNavigator, NotesNavigator } from './Header'
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +21,7 @@ const Menu = function() {
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-home" color={color} size={26} />
               ),
-              tabBarActiveTintColor: '#80ccff',
+              tabBarActiveTintColor: '#9AC4F8',
               tabBarInactiveTintColor: 'gray',
               
             }}
@@ -34,7 +34,7 @@ const Menu = function() {
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-camera" color={color} size={26} />
               ),
-              tabBarActiveTintColor: '#80ccff',
+              tabBarActiveTintColor: '#9AC4F8',
               tabBarInactiveTintColor: 'gray',
             }}
       />
@@ -46,7 +46,7 @@ const Menu = function() {
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-settings" color={color} size={26} />
               ),
-              tabBarActiveTintColor: '#80ccff',
+              tabBarActiveTintColor: '#9AC4F8',
               tabBarInactiveTintColor: 'gray',
             }}
       />
@@ -58,7 +58,7 @@ const Menu = function() {
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-add-circle" color={color} size={26} />
               ),
-              tabBarActiveTintColor: '#80ccff',
+              tabBarActiveTintColor: '#9AC4F8',
               tabBarInactiveTintColor: 'gray',
             }}
       />
