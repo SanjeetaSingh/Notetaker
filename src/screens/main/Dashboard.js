@@ -17,7 +17,7 @@ const Item = ({ title }) => (
   </View>
 );
 
-const dashboard = () => {
+const dashboard = (navigation) => {
   return (
     <View style={styles.container}>
       <VirtualizedList
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: '#80ccff',
+    backgroundColor: '#9AC4F8',
     height: 150,
     justifyContent: 'center',
     marginVertical: 8,
