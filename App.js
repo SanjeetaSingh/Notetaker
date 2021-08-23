@@ -1,19 +1,10 @@
-import * as React from 'react';
-import {StyleSheet} from 'react-native';
-import Menu from "../notetaking-app/src/Menu"
+import 'react-native-gesture-handler';
+import React from 'react';
 
+import Menu from "./src/navigation/Menu"
 
 export default function App(){
   return (
     Menu()
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
