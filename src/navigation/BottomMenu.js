@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import {NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -9,9 +8,7 @@ import { MainNavigator, PhotoNavigator, SettingsNavigator, NotesNavigator } from
 const Tab = createBottomTabNavigator();
 
 const Menu = function() {
-
   return (
-    <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
             name="Dash"
@@ -63,7 +60,6 @@ const Menu = function() {
             }}
       />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 }
 
