@@ -1,6 +1,6 @@
-import 'react-native-gesture-handler';
-import * as React from 'react';
-import { View, Text} from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Button } from "react-native";
+import { Card, List} from 'react-native-paper';
 
 /**
  * Function creates the settings page for the application
@@ -9,11 +9,86 @@ import { View, Text} from 'react-native';
  * 
  * @returns settings screen for the application.
  */
- const setting = function(){
+ const setting  = ({ navigation }) => {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>There is where the settings content will go</Text>
-      </View>
+      <View style={styles.container}>
+
+      {/**This is sections for the account settings */}
+      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+      <List.Subheader style={styles.header}>Account</List.Subheader>
+        <Card style={styles.list}>
+          <Text style={styles.selection}>Edit Profile</Text>
+        </Card>
+      </TouchableOpacity>
+
+      {/**This is sections for the appearance settings */}
+      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+      <List.Subheader style={styles.header}>Appearance</List.Subheader>
+        <Card style={styles.list}>
+          <Text style={styles.selection}>Font</Text>
+        </Card>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+        <Card style={styles.list}>
+          <Text style={styles.selection}>Dark Mode</Text>
+        </Card>
+      </TouchableOpacity>
+
+      {/**This is sections for the more settings */}
+      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+      <List.Subheader style={styles.header}>More</List.Subheader>
+        <Card style={styles.list}>
+          <Text style={styles.selection}>About</Text>
+        </Card>
+      </TouchableOpacity>
+
+      {/**This is to logout of the application */}
+      <TouchableOpacity style={styles.button} >
+      <Button 
+        title = "Logout" 
+        color= '#000'
+        onPress={() => navigation.navigate('Login')}
+      />
+      </TouchableOpacity>
+    </View>
     );
   }
+
+  /**
+   * Styling for the settigs screen
+   */
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#ecf0f1',
+      padding: 8,
+    },
+    list: {
+      padding: 20,
+      backgroundColor: '#9AC4F8',
+      borderRadius: 5,
+      marginTop: 10,
+      marginHorizontal: 10,
+    },
+    header:{
+      fontSize:22,
+      marginTop:20,
+      color:'#000'
+    },
+    selection:{
+      fontSize:20,
+      color:'#000'
+    },
+    button: {
+      backgroundColor: '#9AC4F8',
+      marginLeft: 120,
+      marginRight:120,
+      marginTop: 80,
+      height: 48,
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: 'center',
+    },
+  });
+
   export default setting; 
