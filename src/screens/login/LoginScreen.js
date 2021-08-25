@@ -3,6 +3,15 @@ import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'reac
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { firebase } from '../../firebase/config'
 
+/**
+ * This function is to create the login screen
+ * where the user is asked to put their email and password.
+ * This screen works with firebase to retrive the 
+ * users credentials and let them login successfully. 
+ * 
+ * @param navigation navigates the user to the correct page. 
+ * @returns A login screen for the user.
+ */
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -10,7 +19,8 @@ export default function LoginScreen({navigation}) {
     const onFooterLinkPress = () => {
         navigation.navigate('Registration')
     }
-
+    
+    //When the user presses the login button users credentials is authenticated 
     const onLoginPress = () => {
       firebase
           .auth()
@@ -38,6 +48,7 @@ export default function LoginScreen({navigation}) {
           })
   }
 
+  //The view of the login screen
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -48,6 +59,7 @@ export default function LoginScreen({navigation}) {
                     source={require('../../../assets/logos.png')}
                 />
                 <TextInput
+                //The email text input 
                     style={styles.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
@@ -57,6 +69,7 @@ export default function LoginScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TextInput
+                //The password text input
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
@@ -67,18 +80,22 @@ export default function LoginScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TouchableOpacity
+                //Login button pressed method to check the credentials with firebase is called
                     style={styles.button}
                     onPress={() => onLoginPress()}>
                     <Text style={styles.buttonTitle}>Log in</Text>
                 </TouchableOpacity>
                 <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+                     <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>
     )
 }
 
+/**
+ * Styling of the login screen
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,

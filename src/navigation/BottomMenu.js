@@ -7,10 +7,20 @@ import { MainNavigator, PhotoNavigator, SettingsNavigator, NotesNavigator } from
 
 const Tab = createBottomTabNavigator();
 
+/**
+ * This function handles the fixed menu on every screen 
+ * that routes to the correct screens for the application.
+ * This tab navigation works with the Header javascript file
+ * that works with stack navigation.  
+ * 
+ * @returns The fixed menu on the application screens.
+ */
 const Menu = function() {
   return (
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+    //The headers for the tab navigation is set to not show
+      <Tab.Navigator screenOptions={{ headerShown: false }}> 
       <Tab.Screen
+      //The dashboard tab navigation with a home icon
             name="Dash"
             component={MainNavigator}
             options={{
@@ -24,6 +34,7 @@ const Menu = function() {
             }}
       />
       <Tab.Screen
+      //The add a photo tab navigation with a camera icon
             name="Photo"
             component={PhotoNavigator}
             options={{
@@ -36,6 +47,7 @@ const Menu = function() {
             }}
       />
       <Tab.Screen
+      //The settings tab navigation with a gear icon
             name="setting"
             component={SettingsNavigator}
             options={{
@@ -48,6 +60,7 @@ const Menu = function() {
             }}
       />
       <Tab.Screen
+      //The add a note tab navigation with a plus icon
             name="Edit"
             component={NotesNavigator}
             options={{

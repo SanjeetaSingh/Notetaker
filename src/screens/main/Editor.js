@@ -1,12 +1,15 @@
 import 'react-native-gesture-handler';
 import React, { useRef, useState } from "react";
 import { StyleSheet, Text, ScrollView } from "react-native";
-import {actions, defaultActions, RichEditor, RichToolbar,} from "react-native-pell-rich-editor";
+import {actions, RichEditor, RichToolbar,} from "react-native-pell-rich-editor";
 
 /**
- * Fuction lets the user add notes to the application.
+ * Function created the editor screen which lets the
+ * user add notes to the application. The editor screen 
+ * used Quill.js package to let the user access the toolbar
+ * and the text editor. 
  * 
- * @returns the text editor that the user uses to create notes.
+ * @returns The text editor screen.
  */
 const addNote = function() {
   const RichText = useRef(); //reference to the RichEditor component
@@ -43,7 +46,7 @@ const addNote = function() {
         disabledIconTint={"#80ccff"}
         onPressAddImage={onPressAddImage}
         iconSize={20}
-        //The things that will be inclued in the toolbar
+        //The components that will be inclued in the toolbar
         actions={[
           ...defaultActions,
           actions.insertOrderedList,
@@ -52,7 +55,7 @@ const addNote = function() {
           actions.heading1,
           actions.heading2,  
         ]}
-        // creating icons for actions on toolbar
+        // Creating icons for actions on toolbar
         iconMap={{
           [actions.heading1]: ({ tintColor }) => (
             <Text style={[styles.tib, { color: tintColor }]}>H1</Text>
@@ -64,6 +67,7 @@ const addNote = function() {
         insertVideo={insertVideo}
       />
        <RichEditor
+       //Functionalities for the text editor
         disabled={false}
         containerStyle={styles.editor}
         ref={RichText}
@@ -71,13 +75,14 @@ const addNote = function() {
         placeholder={"Start Writing Here"}
         onChange={(text) => setArticle(text)}
       />
-      
     </ScrollView>
   );
 };
 
-export default addNote;
 
+/**
+ * Styling for the editor screen
+ */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -111,3 +116,4 @@ const styles = StyleSheet.create({
 
 });
 
+export default addNote;

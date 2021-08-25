@@ -3,6 +3,16 @@ import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet} from 'react
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { firebase } from '../../firebase/config'
 
+/**
+ * This function is to create the register screen
+ * where the user is asked to put their credentials in.
+ * This screen works with firebase to save the 
+ * users credentials and let them login and 
+ * create a user successfully. 
+ * 
+ * @param navigation navigates the user to the correct page. 
+ * @returns A registration screen for the user.
+ */
 export default function RegistrationScreen({navigation}) {
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
@@ -13,6 +23,7 @@ export default function RegistrationScreen({navigation}) {
         navigation.navigate('Login')
     }
 
+    //When the user presses the register button users credentials is added to firebase
     const onRegisterPress = () => {
         if (password !== confirmPassword) {
             alert("Passwords don't match.")
@@ -44,6 +55,7 @@ export default function RegistrationScreen({navigation}) {
         });
     }
 
+    //The view of the registration screen
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -54,6 +66,7 @@ export default function RegistrationScreen({navigation}) {
                     source={require('../../../assets/logos.png')}
                 />
                 <TextInput
+                //The full name text input
                     style={styles.input}
                     placeholder='Full Name'
                     placeholderTextColor="#aaaaaa"
@@ -62,6 +75,7 @@ export default function RegistrationScreen({navigation}) {
                     underlineColorAndroid="transparent"
                 />
                 <TextInput
+                //The email text input
                     style={styles.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
@@ -71,6 +85,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TextInput
+                //The password text input
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
@@ -81,6 +96,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TextInput
+                //The confirm password text input
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
@@ -91,6 +107,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TouchableOpacity
+                    //Register button pressed method to check the credentials and add to firebase is called
                     style={styles.button}
                     onPress={() => onRegisterPress()}>
                     <Text style={styles.buttonTitle}>Create account</Text>
@@ -102,13 +119,14 @@ export default function RegistrationScreen({navigation}) {
         </View>
     )
 }
+
+/**
+ * Styling of the register screen
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center'
-    },
-    title: {
-
     },
     logo: {
         flex: 1,

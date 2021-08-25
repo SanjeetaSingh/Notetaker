@@ -1,11 +1,13 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { View, Text, StyleSheet} from 'react-native';
+import { View, Text} from 'react-native';
 
 /**
- * Function for the settings page for the application.
+ * Function creates the settings page for the application
+ * to let the user make changes to the application if 
+ * the wish. 
  * 
- * @returns the contents of the page.
+ * @returns settings screen for the application.
  */
  const setting = function(){
     return (
