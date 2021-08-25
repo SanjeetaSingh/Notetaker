@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React, { useRef, useState } from "react";
 import { StyleSheet, Text, ScrollView } from "react-native";
-import {actions, RichEditor, RichToolbar,} from "react-native-pell-rich-editor";
+import {actions, defaultActions, RichEditor, RichToolbar,} from "react-native-pell-rich-editor";
 
 /**
  * Function created the editor screen which lets the
