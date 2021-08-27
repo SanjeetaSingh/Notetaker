@@ -107,6 +107,43 @@ const cameraRef = useRef();
 
 }
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFill,
+    marginHorizontal:8,
+    marginBottom:8,
+    marginTop:8,
+  },
+  text: {
+    color: '#fff'
+  },
+  buttonsContainer: {
+    position: 'absolute',
+    flexDirection: 'row',
+    bottom: 28,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 35,
+    right: 20,
+    height: 50,
+    width: 50,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#9AC4F8',
+    opacity: 0.7
+  },
+  capture: {
+    backgroundColor: 'white',
+    height: CAPTURE_SIZE,
+    width: CAPTURE_SIZE,
+    borderRadius: Math.floor(CAPTURE_SIZE / 2),
+    marginBottom: 28,
+    marginHorizontal: 30,
+  }
   
 });
 export default camera;
