@@ -47,7 +47,7 @@ import { Card, List} from 'react-native-paper';
       <Button 
         title = "Logout" 
         color= '#000'
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.replace('Login')}
       />
       </TouchableOpacity>
     </View>

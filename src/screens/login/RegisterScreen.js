@@ -20,7 +20,7 @@ export default function RegistrationScreen({navigation}) {
     const [confirmPassword, setConfirmPassword] = useState('')
 
     const onFooterLinkPress = () => {
-        navigation.navigate('Login')
+        navigation.replace('Login')
     }
 
     //When the user presses the register button users credentials is added to firebase
@@ -44,7 +44,7 @@ export default function RegistrationScreen({navigation}) {
                     .doc(uid)
                     .set(data)
                     .then(() => {
-                        navigation.navigate('Menu', {user: data})
+                        navigation.replace('Screen', {user: data})
                     })
                     .catch((error) => {
                         alert(error)
