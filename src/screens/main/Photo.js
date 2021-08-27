@@ -1,20 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  View,
-  Text,
-  TouchableOpacity
-} from 'react-native';
+import {StyleSheet, Dimensions, View, Text, TouchableOpacity} from 'react-native';
 import { Camera } from 'expo-camera';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
-const WINDOW_HEIGHT = Dimensions.get('window').height;
-const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
+//Constants for the dimensions fo the camera screen
+const windowHeight = Dimensions.get('window').height;
+const frameSize = Math.floor(windowHeight * 0.08);
+
+  /**
+  * Function creates the add photo screen that 
+  * uses the camera component to let use to take photos
+  * and save them. 
+  * 
+  * @returns the camera user takes a photo with.
+  */
 
 const camera = function(){
-
-const cameraRef = useRef();
+  const cameraRef = useRef();
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [isPreview, setIsPreview] = useState(false);
@@ -24,16 +26,19 @@ const cameraRef = useRef();
     onHandlePermission();
   }, []);
 
+  //Checking if the user has allowed camera access
   const onHandlePermission = async () => {
     const { status } = await Camera.requestPermissionsAsync();
     setHasPermission(status === 'granted');
   };
 
-  const onCameraReady = () => {
+  //Boolean to notify that the camera is ready
+  const ready = () => {
     setIsCameraReady(true);
   };
 
-  const switchCamera = () => {
+  //Flips the camera 
+  const flipCamera = () => {
     if (isPreview) {
       return;
     }
@@ -44,7 +49,8 @@ const cameraRef = useRef();
     );
   };
 
-  const onSnap = async () => {
+  //Function lets the user take a photo
+  const takenPhoto = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.8, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
@@ -57,11 +63,13 @@ const cameraRef = useRef();
     }
   };
 
-  const cancelPreview = async () => {
+  //Lets the user cancel out of the preview
+  const backPreview = async () => {
     await cameraRef.current.resumePreview();
     setIsPreview(false);
   };
 
+  //If the permission is denied then nothing to show
   if (hasPermission === null) {
     return <View />;
   }
@@ -69,34 +77,35 @@ const cameraRef = useRef();
     return <Text style={styles.text}>No access to camera</Text>;
   }
 
+  //Shows the camera fucntionalities and calls on the functions above
   return (
     <View style={styles.container}>
       <Camera
         ref={cameraRef}
         style={styles.container}
         type={cameraType}
-        onCameraReady={onCameraReady}
+        ready={ready}
         useCamera2Api={true}
       />
       <View style={styles.container}>
         {isPreview && (
           <TouchableOpacity
-            onPress={cancelPreview}
+            onPress={backPreview}
             style={styles.closeButton}
             activeOpacity={0.7}
           >
-            <AntDesign name='close' size={32} color='#fff' />
+          <AntDesign name='close' size={32} color='#fff' />
           </TouchableOpacity>
         )}
         {!isPreview && (
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
+            <TouchableOpacity disabled={!ready} onPress={flipCamera}>
               <MaterialIcons name='flip-camera-ios' size={28} color='white' />
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.7}
-              disabled={!isCameraReady}
-              onPress={onSnap}
+              disabled={!ready}
+              onPress={takenPhoto}
               style={styles.capture}
             />
           </View>
@@ -104,8 +113,11 @@ const cameraRef = useRef();
       </View>
     </View>
   );
-
 }
+
+/**
+ * Styling for the camera screen.
+ */
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFill,
@@ -138,12 +150,13 @@ const styles = StyleSheet.create({
   },
   capture: {
     backgroundColor: 'white',
-    height: CAPTURE_SIZE,
-    width: CAPTURE_SIZE,
-    borderRadius: Math.floor(CAPTURE_SIZE / 2),
+    height: frameSize,
+    width: frameSize,
+    borderRadius: Math.floor(frameSize / 2),
     marginBottom: 28,
     marginHorizontal: 30,
   }
   
 });
+
 export default camera;
