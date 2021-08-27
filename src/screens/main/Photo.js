@@ -4,8 +4,8 @@ import { Camera } from 'expo-camera';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 //Constants for the dimensions fo the camera screen
-const windowHeight = Dimensions.get('window').height;
-const frameSize = Math.floor(windowHeight * 0.08);
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
 
   /**
   * Function creates the add photo screen that 
@@ -33,10 +33,9 @@ const camera = function(){
   };
 
   //Boolean to notify that the camera is ready
-  const ready = () => {
+  const onCameraReady = () => {
     setIsCameraReady(true);
   };
-
   //Flips the camera 
   const flipCamera = () => {
     if (isPreview) {
@@ -84,7 +83,7 @@ const camera = function(){
         ref={cameraRef}
         style={styles.container}
         type={cameraType}
-        ready={ready}
+        onCameraReady={onCameraReady}
         useCamera2Api={true}
       />
       <View style={styles.container}>
@@ -94,17 +93,17 @@ const camera = function(){
             style={styles.closeButton}
             activeOpacity={0.7}
           >
-          <AntDesign name='close' size={32} color='#fff' />
+            <AntDesign name='close' size={32} color='#fff' />
           </TouchableOpacity>
         )}
         {!isPreview && (
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity disabled={!ready} onPress={flipCamera}>
+          <View style={styles.bottomButtonsContainer}>
+            <TouchableOpacity disabled={!isCameraReady} onPress={flipCamera}>
               <MaterialIcons name='flip-camera-ios' size={28} color='white' />
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.7}
-              disabled={!ready}
+              disabled={!isCameraReady}
               onPress={takenPhoto}
               style={styles.capture}
             />
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#fff'
   },
-  buttonsContainer: {
+  bottomButtonsContainer: {
     position: 'absolute',
     flexDirection: 'row',
     bottom: 28,
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     right: 20,
     height: 50,
     width: 50,
-    borderRadius: 10,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#9AC4F8',
@@ -150,13 +149,12 @@ const styles = StyleSheet.create({
   },
   capture: {
     backgroundColor: 'white',
-    height: frameSize,
-    width: frameSize,
-    borderRadius: Math.floor(frameSize / 2),
+    height: CAPTURE_SIZE,
+    width: CAPTURE_SIZE,
+    borderRadius: Math.floor(CAPTURE_SIZE / 2),
     marginBottom: 28,
     marginHorizontal: 30,
   }
-  
 });
 
 export default camera;
