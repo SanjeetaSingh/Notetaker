@@ -88,6 +88,19 @@ const cameraRef = useRef();
             <AntDesign name='close' size={32} color='#fff' />
           </TouchableOpacity>
         )}
+        {!isPreview && (
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
+              <MaterialIcons name='flip-camera-ios' size={28} color='white' />
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              disabled={!isCameraReady}
+              onPress={onSnap}
+              style={styles.capture}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
