@@ -1,8 +1,7 @@
-import 'react-native-gesture-handler';
 import * as React from 'react';
+import 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import { MainNavigator, PhotoNavigator, SettingsNavigator, NotesNavigator } from './Header'
 
 const Tab = createBottomTabNavigator();
@@ -15,7 +14,7 @@ const Tab = createBottomTabNavigator();
  * 
  * @returns The fixed menu on the application screens.
  */
-const Menu = function() {
+ export default function Menu(props)  {
   return (
     //The headers for the tab navigation is set to not show
       <Tab.Navigator screenOptions={{ headerShown: false }}> 
@@ -31,7 +30,7 @@ const Menu = function() {
               tabBarActiveTintColor: '#9AC4F8',
               tabBarInactiveTintColor: 'gray',
               
-            }}
+            }} 
       />
       <Tab.Screen
       //The add a photo tab navigation with a camera icon
@@ -75,5 +74,3 @@ const Menu = function() {
       </Tab.Navigator>
   );
 }
-
-export default Menu;
