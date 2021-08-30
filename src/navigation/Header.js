@@ -1,9 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import {Button} from 'react-native';
-import dashboard from '../screens/main/Dashboard'
+import Dashboard from '../screens/main/Dashboard'
 import camera from '../screens/main/Photo';
-import addNote from '../screens/main/Editor';
+import AddNote from '../screens/main/Editor';
 import settings from '../screens/main/Settings';
 
 const Stack = createStackNavigator();
@@ -13,10 +13,12 @@ const Stack = createStackNavigator();
  * 
  * @returns The screen header.
  */
-const MainNavigator = () => {
+const MainNavigator = (nav) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Dashboard" component={dashboard}/>
+      <Stack.Screen name="Dashboard" >
+      {props => (<Dashboard{...props} extraData={nav.extraData}/>)}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
@@ -72,20 +74,12 @@ const SettingsNavigator = ({navigation}) => {
  * 
  * @returns The screen header.
  */
-const NotesNavigator = ({navigation}) => {
+const NotesNavigator = (nav) => {
     return (
       <Stack.Navigator screenOptions={screenOptionStyle}>
-        <Stack.Screen name="Editor" component={addNote} options={{            
-            headerLeft: () => (
-              //Creating a back button to go back to previous page
-                <Button
-                    title="Back"
-                    onPress={() => {
-                    navigation.goBack();
-                    }}
-                />
-            ),
-        }}/>
+        <Stack.Screen name="Editor">
+        {props => (<AddNote{...props} extraData={nav.extraData}/>)}
+        </Stack.Screen>     
       </Stack.Navigator>
     );
 }
