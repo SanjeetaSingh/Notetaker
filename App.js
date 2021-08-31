@@ -20,48 +20,44 @@ const Stack = createStackNavigator();
  * @returns The UI of the application.
  */
 export default function App() { 
-  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
-  
+
   useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
+    firebase.auth().onAuthStateChanged(users => {
+      if (users) {
         usersRef
-          .doc(user.uid)
+          .doc(users.uid)
           .get()
           .then((document) => {
             const userData = document.data()
-            setLoading(false)
             setUser(userData)
           })
           .catch((error) => {
-            setLoading(false)
+           console.log("error")
           });
-      } else {
-        setLoading(false)
       }
     });
   }, []); 
 
-    return (
-      //The order of the screen will displayed to the user	
-      <NavigationContainer>
-       <Stack.Navigator>
+  return (
+    //The order of the screen will displayed to the user	
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={screenOptionStyle}>
         { user ? (
-          <Stack.Screen name="Screens" options={{ headerShown: false } }>
-            {props => (<Screens {...props} extraData={user} />)}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Registration" component={RegisterScreen} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-    )	;
-  }
+        <Stack.Screen name="Screens" options={{ headerShown: false } }>
+          {props => (<Screens {...props} extraData={user} />)}
+        </Stack.Screen>
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Registration" component={RegisterScreen} />
+        </>
+      )}
+    </Stack.Navigator>
+  </NavigationContainer>
+  )	;
+}
 
   /**
    * The Styling of the stack navigation screens
