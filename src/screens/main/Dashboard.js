@@ -1,31 +1,9 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
-import { View, Text, StyleSheet,VirtualizedList} from 'react-native';
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet,FlatList} from 'react-native';
+import { firebase } from '../../firebase/config'
 
-//An array to store the notes for the list
-const Data = [];
 
-//Getting the note
-const getItem = (data, index) => ({
-  title: `Title of Note \n`+
-          'Date'
-});
-
-//Currently manually rendering 10 notes as placeholders 
-const getItemCount = (data) => 10;
-
-/**
- * Function creates how the list will
- * be presented to the user. 
- * 
- * @param Title The tile of the note.
- * @returns A list of notes on the dashboard screen. 
- */
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
 
 /**
  * This function created the home screen of the application.
@@ -35,18 +13,51 @@ const Item = ({ title }) => (
  * 
  * @returns Home screen for the application.
  */
-const dashboard = function () {
+ export default function addNote(props) {
+  const [entities, setEntities] = useState([])
+
+  const entityRef = firebase.firestore().collection('entities')
+  const userID = props.extraData.id
+
+  useEffect(() => {
+      entityRef
+          .where("authorID", "==", userID)
+          .orderBy('createdAt', 'desc')
+          .onSnapshot(
+              querySnapshot => {
+                  const newEntities = []
+                  querySnapshot.forEach(doc => {
+                      const entity = doc.data()
+                      entity.id = doc.id
+                      newEntities.push(entity)
+                  });
+                  setEntities(newEntities)
+              },
+              error => {
+                console.log(error)
+              }
+          )
+    }, [])
+
+
+const renderEntity = ({item}) => {
   return (
-    <View style={styles.container}>
-      <VirtualizedList
-      //Created the list to display the notes
-        data={Data}
-        initialNumToRender={4}
-        renderItem={({ item }) => <Item title={item.title} />}
-        keyExtractor = { (item, index) => index.toString()}
-        getItemCount={getItemCount}
-        getItem={getItem}
+      <View style={styles.items}>
+          <Text style={styles.entityText}>
+              {item.text}
+          </Text>
+      </View>
+  )
+}
+  return (
+    <View style={styles.listContainer}>
+      <FlatList 
+        data={entities}
+        renderItem={renderEntity}
+        keyExtractor={(item) => item.id}
+        removeClippedSubviews={true}
       />
+  
     </View>
   );
 }
@@ -55,23 +66,20 @@ const dashboard = function () {
  * Styling for the dashboard screen
  */
 const styles = StyleSheet.create({
-  container: {
+  listContainer: {
     flex: 1,
   },
-  item: {
-    backgroundColor: '#9AC4F8',
-    height: 150,
-    justifyContent: 'center',
-    marginVertical: 8,
-    marginHorizontal: 16,
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
+
+  items:{
+      backgroundColor: '#66a3ff',
+      height: 100,
+      justifyContent: 'center',
+      marginVertical: 5,
+      marginHorizontal: 16,
+      padding: 20,
   },
 });
 
 
-  export default dashboard;
 
   
