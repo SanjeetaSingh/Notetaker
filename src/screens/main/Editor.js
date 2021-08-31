@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect,useRef, useState } from "react";
-import { StyleSheet, Text, ScrollView , Keyboard, TouchableOpacity, View } from "react-native";
-import {actions, defaultActions, RichEditor, RichToolbar,} from "react-native-pell-rich-editor";
+import { StyleSheet, Text, ScrollView , Keyboard, TouchableOpacity, View, TextInput } from "react-native";
 import { firebase } from '../../firebase/config'
 
 /**
@@ -13,9 +12,6 @@ import { firebase } from '../../firebase/config'
  * @returns The text editor screen.
  */
  export default function addNote(props) {
-  const RichText = useRef(); //reference to the RichEditor component
-  //const [setArticle] = useState("");
-
   const [entityText, setEntityText] = useState('')
   const [entities, setEntities] = useState([])
 
@@ -61,69 +57,20 @@ import { firebase } from '../../firebase/config'
                 });
         }
     }
-  
-  /**
-   * Add images from the gallery
-   */
-  function onPressAddImage() {
-    //currently incomplete 
-    RichText.current?.insertImage(
-      
-    );
-  }
-
-  /**
-   * Add videos from the gallery
-   */
-  function insertVideo() {
-    //Currently incomplete
-    RichText.current?.insertVideo(
-    );
-  }
 
   return (
     <ScrollView style={styles.container}>
-      <RichToolbar
-      //The tool bar attributes for the editor
-        style={[styles.richBar]}
-        editor={RichText}
-        disabled={false}
-        iconTint={"#000"}
-        selectedIconTint={"#80ccff"}
-        disabledIconTint={"#80ccff"}
-        onPressAddImage={onPressAddImage}
-        iconSize={20}
-        //The components that will be inclued in the toolbar
-        actions={[
-          ...defaultActions,
-          actions.insertOrderedList,
-          actions.insertImage,
-          actions.setStrikethrough,
-          actions.heading1,
-          actions.heading2,
-          actions.undo, 
-          actions.redo, 
-        ]}
-        // Creating icons for actions on toolbar
-        iconMap={{
-          [actions.heading1]: ({ tintColor }) => (
-            <Text style={[styles.tib, { color: tintColor }]}>H1</Text>
-          ),
-          [actions.heading2]: ({ tintColor }) => (
-            <Text style={[styles.tib, { color: tintColor }]}>H2</Text>
-          ),
-        }}
-        insertVideo={insertVideo}
-      />
-       <RichEditor
-       //Functionalities for the text editor
-        disabled={false}
-        containerStyle={styles.editor}
-        ref={RichText}
-        style={styles.rich}
-        placeholder={"Start Writing Here"}
-        onChange={(text) => setEntityText(text)}
+      {/* Functionalities for the text editor */}
+      <TextInput 
+        multiline={true}  // Default is false so you can remove this line
+        scrollEnabled={false} // Default is false so you can remove this line
+        style={styles.input}
+        placeholder='Start here...'
+        placeholderTextColor="#aaaaaa"
+        onChangeText={(text) => setEntityText(text)}
         value={entityText}
+        underlineColorAndroid="transparent"
+        autoCapitalize="none"
       />
       <View style={styles.buttonContainer}>
         <View style={styles.formContainer}>
@@ -134,8 +81,7 @@ import { firebase } from '../../firebase/config'
       </View>
     </ScrollView>
   );
-};
-
+}
 
 /**
  * Styling for the editor screen
@@ -146,53 +92,31 @@ const styles = StyleSheet.create({
     marginTop: 0,
     backgroundColor: "#F5FCFF",
   },
-  editor: {
-    backgroundColor: "white",
-    borderColor: "black",
-    borderWidth: 1,
-  },
-  rich: {
-    marginTop:5,
-    minHeight: 600,
-    flex: 1,
-    marginHorizontal: 30,
-    marginVertical: 5,
-  },
-  richBar: {
-    height: 50,
-    backgroundColor: "#F5FCFF",
-  },
-  text: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  tib: {
-    textAlign: "center",
-    color: "#515156",
-  },
+  
   buttonContainer: {
     flex: 1,
-    alignItems: 'center'
-},
-formContainer: {
-  flexDirection: 'row',
-  height: 80,
-  marginBottom: 20,
-  flex: 1,
-  paddingTop: 10,
-  paddingBottom: 10,
-  paddingLeft: 30,
-  paddingRight: 30,
-  justifyContent: 'center',
-  alignItems: 'center'
-},
-input: {
-  height: 48,
-  borderRadius: 5,
-  overflow: 'hidden',
-  backgroundColor: 'white',
-  paddingLeft: 16,
-  flex: 1,
-  marginRight: 5
-},
+  },
+  formContainer: {
+    backgroundColor: '#9AC4F8',
+    marginLeft: 150,
+    marginRight:150,
+    marginTop: 80,
+    height: 48,
+    borderRadius: 130,
+    alignItems: "center",
+    justifyContent: 'center',
+  },
+  input: {
+    height: 550,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    paddingLeft: 16,
+    flex: 1,
+    marginRight: 20,
+    marginLeft:20,
+    marginTop: 25,
+    borderColor: "black",
+    borderWidth: 4,
+    fontSize:19,
+  },
 });
