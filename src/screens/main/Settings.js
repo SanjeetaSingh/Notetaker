@@ -1,6 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Button } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, useNavigation } from "react-native";
 import { Card, List} from 'react-native-paper';
+import { firebase } from "../../firebase/config";
+
 
 /**
  * Function creates the settings page for the application
@@ -9,7 +11,7 @@ import { Card, List} from 'react-native-paper';
  * 
  * @returns settings screen for the application.
  */
- const setting  = ({ navigation }) => {
+ export default function setting({navigation}) {
     return (
       <View style={styles.container}>
 
@@ -41,15 +43,16 @@ import { Card, List} from 'react-native-paper';
           <Text style={styles.selection}>About</Text>
         </Card>
       </TouchableOpacity>
-
+      
       {/**This is to logout of the application */}
-      <TouchableOpacity style={styles.button} >
-      <Button 
-        title = "Logout" 
-        color= '#000'
-        onPress={() => navigation.replace('Login')}
+      {/* <TouchableOpacity style={styles.button} >
+        <Button
+        title="Logout"
+        onPress={() =>firebase.auth()
+                      .signOut()
+                      .then(() => nav.navigate('Login'))}
       />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
     );
   }
@@ -90,5 +93,3 @@ import { Card, List} from 'react-native-paper';
       justifyContent: 'center',
     },
   });
-
-  export default setting; 

@@ -44,7 +44,7 @@ export default function RegistrationScreen({navigation}) {
                     .doc(uid)
                     .set(data)
                     .then(() => {
-                        navigation.replace('Screen', {user: data})
+                        navigation.replace('Screens', {user: data})
                     })
                     .catch((error) => {
                         alert(error)
