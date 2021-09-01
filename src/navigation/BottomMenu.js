@@ -44,17 +44,16 @@ const Tab = createBottomTabNavigator();
       />
       <Tab.Screen
       //The settings tab navigation with a gear icon
-            name="setting"
-            component={SettingsNavigator}
-            options={{
+            name="setting" options={{
               tabBarLabel:'Setting',
               tabBarIcon: ({ color }) => (
                 <Ionicons name="ios-settings" color={color} size={26} />
               ),
               tabBarActiveTintColor: '#9AC4F8',
               tabBarInactiveTintColor: 'gray',
-            }}
-      />
+            }}>
+            {props => (<SettingsNavigator {...props} extraData={nav.extraData}/>)}
+      </Tab.Screen>
       
       <Tab.Screen 
       //The add a note tab navigation with a plus icon

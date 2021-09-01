@@ -4,7 +4,7 @@ import {Button} from 'react-native';
 import Dashboard from '../screens/main/Dashboard'
 import camera from '../screens/main/Photo';
 import AddNote from '../screens/main/Editor';
-import settings from '../screens/main/Settings';
+import Settings from '../screens/main/Settings';
 
 const Stack = createStackNavigator();
 
@@ -51,20 +51,12 @@ const PhotoNavigator = ({navigation}) => {
  * 
  * @returns The screen header.
  */
-const SettingsNavigator = ({navigation}) => {
+const SettingsNavigator = (nav) => {
     return (
       <Stack.Navigator screenOptions={screenOptionStyle}>
-        <Stack.Screen name="Settings" component={settings} options={{
-            headerLeft: () => (
-              //Creating a back button to go back to previous page
-                <Button
-                    title="Back"
-                    onPress={() => {
-                    navigation.goBack();
-                    }}
-                />
-            ),
-        }}/>
+        <Stack.Screen name="Settings"> 
+            {props => (<Settings{...props} extraData={nav.extraData}/>)}
+        </Stack.Screen>
       </Stack.Navigator>
     );
 }
