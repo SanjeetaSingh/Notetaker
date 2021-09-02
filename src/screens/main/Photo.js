@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import {StyleSheet, Dimensions, View, Text, TouchableOpacity} from 'react-native';
 import { Camera } from 'expo-camera';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import * as MediaLibrary from 'expo-media-library';
 
 //Constants for the dimensions fo the camera screen
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -9,8 +10,8 @@ const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
 
   /**
   * Function creates the add photo screen that 
-  * uses the camera component to let use to take photos
-  * and save them. 
+  * uses the camera component to let users to take photos
+  * and save them locally. 
   * 
   * @returns the camera user takes a photo with.
   */
@@ -51,14 +52,17 @@ const camera = function(){
   //Function lets the user take a photo
   const takenPhoto = async () => {
     if (cameraRef.current) {
-      const options = { quality: 0.8, base64: true };
+      const options = { quality: 0.8, base64: true, skipProcessing: true};
       const data = await cameraRef.current.takePictureAsync(options);
-      const source = data.base64;
-
+      const asset = await MediaLibrary.createAssetAsync(data.uri);
+      
+      //Saves the photo to gallery when photo is taken 
+      const source = asset;
       if (source) {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
-      }
+        setIsCameraReady(true);
+      } 
     }
   };
 
@@ -91,8 +95,7 @@ const camera = function(){
           <TouchableOpacity
             onPress={backPreview}
             style={styles.closeButton}
-            activeOpacity={0.7}
-          >
+            activeOpacity={0.7}>
             <AntDesign name='close' size={32} color='#fff' />
           </TouchableOpacity>
         )}
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: Math.floor(CAPTURE_SIZE / 2),
     marginBottom: 28,
     marginHorizontal: 30,
-  }
+  },
 });
 
 export default camera;
