@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, useNavigation } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, useNavigation, DevSettings } from "react-native";
 import { Card, List} from 'react-native-paper';
 import { firebase } from "../../firebase/config";
 
@@ -45,14 +45,14 @@ import { firebase } from "../../firebase/config";
       </TouchableOpacity>
       
       {/**This is to logout of the application */}
-      {/* <TouchableOpacity style={styles.button} >
+      <TouchableOpacity style={styles.button} >
         <Button
         title="Logout"
         onPress={() =>firebase.auth()
                       .signOut()
-                      .then(() => nav.navigate('Login'))}
+                      .then(() => DevSettings.reload())}
       />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
     );
   }
