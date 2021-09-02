@@ -1,9 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet,FlatList} from 'react-native';
+import { View, Text, StyleSheet,FlatList, Button} from 'react-native';
 import { firebase } from '../../firebase/config'
-
-
+import { IconButton} from 'react-native-paper';
 
 /**
  * This function created the home screen of the application.
@@ -50,14 +49,28 @@ const renderEntity = ({item}) => {
   )
 }
   return (
-    <View style={styles.listContainer}>
+    <View style={styles.listContainer}> 
+      <View style={styles.top}> 
+        <Text style={styles.header}>Notes</Text>
+          <IconButton style={styles.asc}
+            icon="sort-ascending"
+            color={'#9AC4F8'}
+            size={37}
+            onPress={() => console.log('Pressed Asc')}
+          />
+          <IconButton style={styles.edit}
+            icon="square-edit-outline"
+            color={'#9AC4F8'}
+            size={37}
+            onPress={() => console.log('Pressed Edit')}
+          />
+      </View>
       <FlatList 
         data={entities}
         renderItem={renderEntity}
         keyExtractor={(item) => item.id}
         removeClippedSubviews={true}
       />
-  
     </View>
   );
 }
@@ -69,15 +82,32 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
   },
-
   items:{
-      backgroundColor: '#66a3ff',
+      backgroundColor: '#9AC4F8',
       height: 100,
       justifyContent: 'center',
       marginVertical: 5,
       marginHorizontal: 16,
       padding: 20,
   },
+  header: {
+    fontSize:40,
+    fontWeight: 'bold',
+    marginHorizontal: 16,
+    marginTop: 20,
+    marginBottom: 5,
+  },
+  top:{
+    flexDirection: 'row'
+  },
+  asc:{
+    marginTop:10,
+    left:170,
+  },
+  edit:{
+    marginTop:10,
+    left:150,
+  }
 });
 
 
