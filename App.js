@@ -1,16 +1,18 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import LoginScreen from '../notetaking-app/src/screens/login/LoginScreen' 
-import RegisterScreen from '../notetaking-app/src/screens/login/RegisterScreen'
-import Screens from './src/navigation/BottomMenu';
+import React from 'react'
 import {decode, encode} from 'base-64'
-import { firebase } from './src/firebase/config'
+
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
+
+import Menu from './src/navigation/Navigate'
+import reducers from "../notetaking-app/src/redux/reducers/index.reducers";
+var middlewares = applyMiddleware(thunk);
+const store = createStore(reducers, middlewares);
+
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
-
-const Stack = createStackNavigator();
 
 /**
  * This function calls on the functions
@@ -20,57 +22,12 @@ const Stack = createStackNavigator();
  * @returns The UI of the application.
  */
 export default function App() { 
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    const usersRef = firebase.firestore().collection('users');
-    firebase.auth().onAuthStateChanged(users => {
-      if (users) {
-        usersRef
-          .doc(users.uid)
-          .get()
-          .then((document) => {
-            const userData = document.data()
-            setUser(userData)
-          })
-          .catch((error) => {
-           console.log("error")
-          });
-      }
-    });
-  }, []); 
-
   return (
-    //The order of the screen will displayed to the user	
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={screenOptionStyle}>
-        { user ? (
-        <Stack.Screen name="Screens" options={{ headerShown: false } }>
-          {props => (<Screens {...props} extraData={user} />)}
-        </Stack.Screen>
-      ) : (
-        <>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Registration" component={RegisterScreen} />
-        </>
-      )}
-    </Stack.Navigator>
-  </NavigationContainer>
-  )	;
+    <Provider store={store}>
+      <Menu/>
+    </Provider>
+  );
 }
 
-  /**
-   * The Styling of the stack navigation screens
-   */
-  const screenOptionStyle = {
-    headerStyle: {
-      backgroundColor: "#9AC4F8",
-    },
-    headerTitleStyle: {
-      fontWeight: 'bold',
-      fontSize: 25,
-    },
-    headerTintColor: "white",
-  };
 
 
