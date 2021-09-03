@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet,FlatList, Button} from 'react-native';
 import { firebase } from '../../firebase/config'
 import { IconButton} from 'react-native-paper';
+import { useTheme } from '@react-navigation/native';
 
 /**
  * This function created the home screen of the application.
@@ -14,10 +15,10 @@ import { IconButton} from 'react-native-paper';
  */
  export default function addNote(props) {
   const [entities, setEntities] = useState([])
-
   const entityRef = firebase.firestore().collection('entities')
   const userID = props.extraData.id
 
+  const { colors } = useTheme();
   useEffect(() => {
       entityRef
           .where("authorID", "==", userID)
@@ -51,7 +52,7 @@ const renderEntity = ({item}) => {
   return (
     <View style={styles.listContainer}> 
       <View style={styles.top}> 
-        <Text style={styles.header}>Notes</Text>
+        <Text style={{color: colors.text, fontSize:40, marginTop:20, marginHorizontal: 16, marginBottom: 5, fontWeight:'bold'}}>Notes</Text>
           <IconButton style={styles.asc}
             icon="sort-ascending"
             color={'#9AC4F8'}
@@ -89,13 +90,7 @@ const styles = StyleSheet.create({
       marginVertical: 5,
       marginHorizontal: 16,
       padding: 20,
-  },
-  header: {
-    fontSize:40,
-    fontWeight: 'bold',
-    marginHorizontal: 16,
-    marginTop: 20,
-    marginBottom: 5,
+      borderRadius:6
   },
   top:{
     flexDirection: 'row'
@@ -107,9 +102,12 @@ const styles = StyleSheet.create({
   edit:{
     marginTop:10,
     left:150,
+  },
+  entityText:{
+    fontWeight:'bold',
+    fontSize:19
   }
 });
 
 
 
-  
