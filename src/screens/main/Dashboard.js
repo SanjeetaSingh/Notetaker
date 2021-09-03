@@ -4,6 +4,7 @@ import { View, Text, StyleSheet,FlatList, Button} from 'react-native';
 import { firebase } from '../../firebase/config'
 import { IconButton} from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
+import moment from 'moment';
 
 /**
  * This function created the home screen of the application.
@@ -39,12 +40,17 @@ import { useTheme } from '@react-navigation/native';
           )
     }, [])
 
-
+/**
+ * This function renders the item to show on the flat list
+ * 
+ * @param item the item stored in firebase
+ * @returns the item
+ */
 const renderEntity = ({item}) => {
   return (
       <View style={styles.items}>
           <Text style={styles.entityText}>
-              {item.text}
+              {item.title}
           </Text>
       </View>
   )
@@ -108,6 +114,7 @@ const styles = StyleSheet.create({
     fontSize:19
   }
 });
+
 
 
 
