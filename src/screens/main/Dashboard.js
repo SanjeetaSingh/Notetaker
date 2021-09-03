@@ -4,7 +4,6 @@ import { View, Text, StyleSheet,FlatList, Button} from 'react-native';
 import { firebase } from '../../firebase/config'
 import { IconButton} from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
-import moment from 'moment';
 
 /**
  * This function created the home screen of the application.
