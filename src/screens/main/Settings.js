@@ -1,7 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, useNavigation, DevSettings } from "react-native";
-import { Card, List} from 'react-native-paper';
+import { Card, List, Switch} from 'react-native-paper';
 import { firebase } from "../../firebase/config";
+import * as themeActions from "../../redux/actions/theme.action";
+import { useDispatch,useSelector } from "react-redux";
 
 
 /**
@@ -12,6 +14,9 @@ import { firebase } from "../../firebase/config";
  * @returns settings screen for the application.
  */
  export default function setting({navigation}) {
+    const dispatch = useDispatch();
+    const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+
     return (
       <View style={styles.container}>
 
@@ -30,11 +35,15 @@ import { firebase } from "../../firebase/config";
           <Text style={styles.selection}>Font</Text>
         </Card>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
-        <Card style={styles.list}>
-          <Text style={styles.selection}>Dark Mode</Text>
-        </Card>
-      </TouchableOpacity>
+
+
+      <View style={{ flex: 1 }}>
+            <List.Item
+                title="Dark Mode"
+                left={() => <List.Icon icon="brightness-4" />}
+                right={() => <Switch value={themeReducer.theme} onValueChange={(val)=>dispatch(themeActions.ToggleTheme(val))} />}
+            />
+        </View>
 
       {/**This is sections for the more settings */}
       <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
@@ -63,11 +72,16 @@ import { firebase } from "../../firebase/config";
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#ecf0f1',
       padding: 8,
     },
     list: {
       padding: 20,
+      backgroundColor: '#9AC4F8',
+      borderRadius: 5,
+      marginTop: 10,
+      marginHorizontal: 10,
+    },
+    toggle: {
       backgroundColor: '#9AC4F8',
       borderRadius: 5,
       marginTop: 10,
