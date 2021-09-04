@@ -55,9 +55,8 @@ export default function addNote(props) {
       entityRef
         .add(data)
         .then(_doc => {
-          setEntityText('')
-          Keyboard.dismiss()
           setTitle('')
+          setEntityText('')
           Keyboard.dismiss()
         })
         .catch((error) => {
@@ -104,7 +103,6 @@ export default function addNote(props) {
         onChangeText={(text) => setTitle(text)}
         value={titleEntry}
         underlineColorAndroid="transparent"
-        autoCapitalize="none"
       />
       <RichEditor
         //Functionalities for the text editor
@@ -112,7 +110,7 @@ export default function addNote(props) {
         containerStyle={styles.editor}
         ref={RichText}
         style={styles.rich}
-        placeholder={"Start Writing Here..."}
+        placeholder={"start write here..."}
         // This to avoid html tags being produced when the text gets saved
         onChange={(text) => setEntityText(text.replace(/(<([^>]+)>)/ig, ''))}
         value={entityText}
@@ -136,7 +134,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 0,
-    backgroundColor: "#f2f2f2",
   },
   editor: {
     backgroundColor: "white",
@@ -152,7 +149,6 @@ const styles = StyleSheet.create({
   },
   richBar: {
     height: 50,
-    backgroundColor: "#f2f2f2",
   },
   tib: {
     textAlign: "center",
@@ -176,5 +172,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 30,
     fontSize:25,
+    marginTop:20,
+    fontWeight:'bold'
 },
 });
