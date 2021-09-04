@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, ScrollView, Keyboard, TouchableOpacity, View, TextInput } from "react-native";
-import { firebase } from '../../firebase/config'
+import { StyleSheet, Text, ScrollView, Keyboard, TouchableOpacity, View, TextInput, Image } from "react-native";
+import { firebase } from '../../firebase/config';
 import { actions, defaultActions, RichEditor, RichToolbar, } from "react-native-pell-rich-editor";
+import * as ImagePicker from 'expo-image-picker';
 
 /**
  * Function created the editor screen which lets the
@@ -17,9 +18,11 @@ export default function addNote(props) {
   const [entityText, setEntityText] = useState('')
   const [titleEntry, setTitle] = useState('')
   const [entities, setEntities] = useState([])
+  const [image, setImage] = useState(null);
 
+  //The collection that is created for the notes
   const entityRef = firebase.firestore().collection('entities')
-  const userID = props.extraData.id
+  const userID = props.extraData.id;
 
   //Function makes sure that data is saved under the correct user
   useEffect(() => {
@@ -41,6 +44,24 @@ export default function addNote(props) {
         }
       )
   }, [])
+
+  /**
+   * Function lets user add image to screen from the
+   * users gallery. 
+   */
+  const onPressAddImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
 
   // Function handles logic to save the text that gets saved to firebase 
   const onAddButtonPress = () => {
@@ -66,7 +87,7 @@ export default function addNote(props) {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       {/* Functionalities for the text editor */}
       <RichToolbar
         //The tool bar attributes for the editor
@@ -76,6 +97,7 @@ export default function addNote(props) {
         iconTint={"#000"}
         selectedIconTint={"#80ccff"}
         disabledIconTint={"#80ccff"}
+        onPressAddImage={onPressAddImage}
         iconSize={20}
         //The components that will be inclued in the toolbar
         actions={[
@@ -96,34 +118,39 @@ export default function addNote(props) {
           ),
         }}
       />
-      <TextInput
-        style={styles.title}
-        placeholder='Title'
-        placeholderTextColor="#aaaaaa"
-        onChangeText={(text) => setTitle(text)}
-        value={titleEntry}
-        underlineColorAndroid="transparent"
-      />
-      <RichEditor
-        //Functionalities for the text editor
-        disabled={false}
-        containerStyle={styles.editor}
-        ref={RichText}
-        style={styles.rich}
-        placeholder={"start write here..."}
-        // This to avoid html tags being produced when the text gets saved
-        onChange={(text) => setEntityText(text.replace(/(<([^>]+)>)/ig, ''))}
-        value={entityText}
-      />
+
+      <ScrollView style={styles.container}>
+        {/* Creates the text input for the notes title */}
+        <TextInput
+          style={styles.title}
+          placeholder='Title'
+          placeholderTextColor="#aaaaaa"
+          onChangeText={(text) => setTitle(text)}
+          value={titleEntry}
+          underlineColorAndroid="transparent"
+        />
+        {/* Inserts the image to the screen under the title */}
+        {image && <Image source={{ uri: image }} style={styles.imageCon} />}
+        <RichEditor
+          //Functionalities for the text editor
+          scrollEnabled={false}
+          containerStyle={styles.editor}
+          ref={RichText}
+          style={styles.rich}
+          placeholder={"start write here..."}
+          // This to avoid html tags being produced when the text gets saved
+          onChange={(text) => setEntityText(text.replace(/(<([^>]+)>)/ig, ''))}
+          value={entityText}
+        />
+      </ScrollView>
+
       {/* Button that saves the note to firebase*/}
-      <View style={styles.buttonContainer}>
-        <View style={styles.formContainer}>
-          <TouchableOpacity onPress={onAddButtonPress}>
-            <Text>Save</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.formContainer}>
+        <TouchableOpacity onPress={onAddButtonPress}>
+          <Text>Save</Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -132,8 +159,7 @@ export default function addNote(props) {
  */
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 0,
+    flex: 1
   },
   editor: {
     backgroundColor: "white",
@@ -145,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 30,
     marginVertical: 5,
-    fontSize:1,
+    fontSize: 1,
   },
   richBar: {
     height: 50,
@@ -162,7 +188,8 @@ const styles = StyleSheet.create({
     borderRadius: 130,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:2,
+    marginTop: 2,
+    marginBottom: 12,
   },
   title: {
     height: 60,
@@ -171,8 +198,16 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     marginVertical: 5,
     marginHorizontal: 30,
-    fontSize:25,
-    marginTop:20,
-    fontWeight:'bold'
-},
+    fontSize: 25,
+    marginTop: 10,
+    fontWeight: 'bold'
+  },
+  imageCon: {
+    height: 160,
+    width: 160,
+    marginLeft: 110,
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+  }
 });
