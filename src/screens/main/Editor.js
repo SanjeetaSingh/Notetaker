@@ -4,6 +4,7 @@ import { StyleSheet, Text, ScrollView, Keyboard, TouchableOpacity, View, TextInp
 import { firebase } from '../../firebase/config';
 import { actions, defaultActions, RichEditor, RichToolbar, } from "react-native-pell-rich-editor";
 import * as ImagePicker from 'expo-image-picker';
+import HTMLView from "react-native-htmlview";
 
 /**
  * Function created the editor screen which lets the
@@ -23,27 +24,6 @@ export default function addNote(props) {
   //The collection that is created for the notes
   const entityRef = firebase.firestore().collection('entities')
   const userID = props.extraData.id;
-
-  //Function makes sure that data is saved under the correct user
-  useEffect(() => {
-    entityRef
-      .where("authorID", "==", userID)
-      .orderBy('createdAt', 'desc')
-      .onSnapshot(
-        querySnapshot => {
-          const newEntities = []
-          querySnapshot.forEach(doc => {
-            const entity = doc.data()
-            entity.id = doc.id
-            newEntities.push(entity)
-          });
-          setEntities(newEntities)
-        },
-        error => {
-          console.log(error)
-        }
-      )
-  }, [])
 
   /**
    * Function lets user add image to screen from the
@@ -72,12 +52,14 @@ export default function addNote(props) {
         authorID: userID,
         createdAt: timestamp,
         title: titleEntry,
+        images: image,
       };
       entityRef
         .add(data)
         .then(_doc => {
           setTitle('')
           setEntityText('')
+          setImage(null)
           Keyboard.dismiss()
         })
         .catch((error) => {
@@ -85,7 +67,8 @@ export default function addNote(props) {
         });
     }
   }
-
+  
+  
   return (
     <View style={styles.container}>
       {/* Functionalities for the text editor */}
@@ -131,6 +114,7 @@ export default function addNote(props) {
         />
         {/* Inserts the image to the screen under the title */}
         {image && <Image source={{ uri: image }} style={styles.imageCon} />}
+      
         <RichEditor
           //Functionalities for the text editor
           scrollEnabled={false}
@@ -140,16 +124,17 @@ export default function addNote(props) {
           placeholder={"start write here..."}
           // This to avoid html tags being produced when the text gets saved
           onChange={(text) => setEntityText(text.replace(/(<([^>]+)>)/ig, ''))}
-          value={entityText}
+          value={""}
         />
+
       </ScrollView>
 
       {/* Button that saves the note to firebase*/}
       <View style={styles.formContainer}>
-        <TouchableOpacity onPress={onAddButtonPress}>
-          <Text>Save</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity onPress={onAddButtonPress}>
+              <Text>Save</Text>
+            </TouchableOpacity>
+          </View>
     </View>
   );
 }
