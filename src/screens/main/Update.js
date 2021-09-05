@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Alert, ScrollView, TextInput, Button } from 'react-native';
-
+import { Alert, ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import { firebase } from '../../firebase/config';
+import { Card } from 'react-native-paper';
 
 /**
  * This function lets the user to update the email and
@@ -10,6 +11,7 @@ import { firebase } from '../../firebase/config';
  * @returns a updated password or email or both
  */
 function Update() {
+    const { colors } = useTheme();
     const [newPassword, setnewPassword] = useState('')
     const [currentPassword, setCurrentPassword] = useState('')
 
@@ -66,36 +68,112 @@ function Update() {
 
     return (
         <ScrollView>
-            <TextInput
-                placeholder="Current Password"
-                secureTextEntry={true}
-                onChangeText={(text) => setCurrentPassword(text)}
-            />
-            <TextInput
-                placeholder="New Password"
-                secureTextEntry={true}
-                onChangeText={(text) => setnewPassword(text)}
-                value={newPassword}
-            />
-            <Button title="change password" onPress={onChangePasswordPress} />
+            <Text style={{ color: colors.text, fontSize: 17, marginTop: 80, textAlign: 'center', fontWeight: 'bold' }}>
+                Update your passsword for you profile.
+            </Text>
+            <Card style={styles.topField}>
+                <TextInput style={{ color: colors.text }}
+                    placeholder="Enter Current Password"
+                    placeholderTextColor="#aaaaaa"
+                    secureTextEntry={true}
+                    onChangeText={(text) => setCurrentPassword(text)}
+                />
+            </Card>
 
-            <TextInput
-                placeholder="Current Password"
-                secureTextEntry={true}
-                onChangeText={(text) => setCurrentPassword(text)}
-            />
-            <TextInput
-                placeholder="New Email"
-                keyboardType="email-address"
-                onChangeText={(text) => setNewEmail(text)}
-                value={newEmail}
-            />
-            <Button title="change email" onPress={onChangeEmailPress} />
+            <Card style={styles.toggle}>
+                <TextInput style={{ color: colors.text }}
+                    placeholder="Enter New Password"
+                    placeholderTextColor="#aaaaaa"
+                    secureTextEntry={true}
+                    onChangeText={(text) => setnewPassword(text)}
+                    value={newPassword}
+                />
+            </Card>
+    
+            <TouchableOpacity style={styles.passwordButton} onPress={onChangePasswordPress}>
+                <Text style={styles.text}>Change Password</Text>
+            </TouchableOpacity>
 
+            <Text style={{ color: colors.text, fontSize: 17, marginTop: 30, textAlign: 'center', fontWeight: 'bold' }}>
+                Update your Email for your profile. {'\n'}
+                Please enter your current password to verfy it is you.
+            </Text>
+            <Card style={styles.toggle}>
+                <TextInput style={{ color: colors.text }}
+                    placeholder="Enter Current Password"
+                    placeholderTextColor="#aaaaaa"
+                    secureTextEntry={true}
+                    onChangeText={(text) => setCurrentPassword(text)}
+                />
+            </Card>
+
+            <Card style={styles.toggle}>
+                <TextInput style={{ color: colors.text }}
+                    placeholder="Enter New Email"
+                    placeholderTextColor="#aaaaaa"
+                    keyboardType="email-address"
+                    onChangeText={(text) => setNewEmail(text)}
+                    value={newEmail}
+                />
+            </Card>
+
+            <TouchableOpacity style={styles.button} onPress={onChangeEmailPress}>
+                <Text style={styles.text}>Change Email</Text>
+            </TouchableOpacity>
         </ScrollView>
 
 
     );
 }
+
+/**
+ * Styling for the settigs screen
+ */
+const styles = StyleSheet.create({
+    toggle: {
+        marginTop: 10,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        fontWeight: 'bold',
+        padding: 19,
+        marginHorizontal: 20,
+    },
+    topField: {
+        marginTop: 15,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        marginHorizontal: 20,
+        fontWeight: 'bold',
+        padding: 19
+    },
+    button: {
+        backgroundColor: '#9AC4F8',
+        marginLeft: 140,
+        marginRight: 140,
+        marginTop: 10,
+        height: 48,
+        borderRadius: 130,
+        alignItems: "center",
+        justifyContent: 'center',
+    },
+    text:{
+        fontSize: 15,
+        fontWeight:'bold',
+        color:'#fff',
+        
+    },
+    passwordButton:{
+        backgroundColor: '#9AC4F8',
+        marginLeft: 140,
+        marginRight: 140,
+        marginTop:15,
+        height: 48,
+        borderRadius: 130,
+        alignItems: "center",
+        justifyContent: 'center',
+        
+    }
+});
+
 
 export default Update;

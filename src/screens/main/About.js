@@ -1,14 +1,44 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Text, View, StyleSheet } from 'react-native';
+import { Card } from 'react-native-paper';
 
-function About(navigation) {
+function About() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>About!</Text>
+    <View>
+       <Card style={styles.text}>
+         <Text style={styles.content}>
+           Hi! Just a litle about this application... This application is made for users
+           that are always on the go and need something handy to jot down there thoughts or
+           important infomation. There is a few features to this Note Taking application such as 
+           the text edior that lets you write anything you like and save those notes that can 
+           later be seen on your dashboard. The camera feature that captures moments and stores them 
+           locally to your device which can be used in your notes later on too. The daily list feature
+           that allows you to jot tasks you need to compelte. This Notes Taking application stores your 
+           information safely on firebase and with the sign up/sign in feature keeps your information secure.
+         </Text>
+       </Card>
     </View>
   );
 }
+/**
+ * Styling for the settigs screen
+ */
+ const styles = StyleSheet.create({
 
+  text: {
+      marginTop: 50,
+      backgroundColor: '#fff',
+      marginHorizontal: 20,
+      fontWeight: 'bold',
+      padding: 19,
+      textAlign:'center',
+      borderRadius:15,
+      height:600,
+  }, 
+  content:{
+    fontSize:20,
+    textAlign:'center',
+    marginTop:100,
+    }
+});
 export default About;
