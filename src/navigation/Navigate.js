@@ -146,18 +146,16 @@ const Menu = (nav) => {
       />
 
       {/* The Daily todo tab navigation */}
-      <Tab.Screen
-        name="To-Do"
-        component={ToDoNavigator}
-        options={{
-          tabBarLabel: 'To-Do',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="document" color={color} size={26} />
-          ),
-          tabBarActiveTintColor: '#9AC4F8',
-          tabBarInactiveTintColor: 'gray',
-        }}
-      />
+      <Tab.Screen name='todo' options={{
+        tabBarLabel: 'Daily Todo',
+        tabBarIcon: ({ color }) => (
+          <Ionicons name="document" color={color} size={26} />
+        ),
+        tabBarActiveTintColor: '#9AC4F8',
+        tabBarInactiveTintColor: 'gray',
+      }}>
+        {props => (<ToDoNavigator {...props} extraData={nav.extraData} />)}
+      </Tab.Screen>
 
       {/* The Editor tab navigation */}
       <Tab.Screen
