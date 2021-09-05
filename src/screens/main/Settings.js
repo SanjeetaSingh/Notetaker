@@ -1,11 +1,10 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, useNavigation, DevSettings } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Button, DevSettings, FlatList } from "react-native";
 import { Card, List, Switch } from 'react-native-paper';
 import { firebase } from "../../firebase/config";
 import * as themeActions from "../../redux/actions/theme.action";
 import { useDispatch, useSelector } from "react-redux";
-import { useTheme } from '@react-navigation/native';
-
+import { useTheme, useNavigation } from '@react-navigation/native';
 
 /**
  * Function creates the settings page for the application
@@ -14,25 +13,62 @@ import { useTheme } from '@react-navigation/native';
  * 
  * @returns settings screen for the application.
  */
-export default function setting({ navigation }) {
+export default function setting(props) {
+  const navigation = useNavigation();
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const themeReducer = useSelector(({ themeReducer }) => themeReducer);
 
+  const [entities, setEntities] = useState([])
+  const entityRef = firebase.firestore().collection('users')
+  const userID = props.extraData.id
+
+  useEffect(() => {
+    entityRef
+      .where("id", "==", userID)
+      .onSnapshot(
+        querySnapshot => {
+          const newEntities = []
+          querySnapshot.forEach(doc => {
+            const entity = doc.data()
+            entity.id = doc.id
+            newEntities.push(entity)
+          });
+          setEntities(newEntities)
+        },
+        error => {
+          console.log(error)
+        }
+      )
+  }, [])
+
+  const renderEntity = ({ item }) => {
+    return (
+      <View style={styles.items}>
+        <Text style={{ color: colors.text, fontSize: 19, textAlign: 'center' }}>
+          <Text style={styles.starters}>Name: </Text>
+          {item.fullName}
+        </Text>
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.container}>
-      <List.Subheader style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginTop: 20, textAlign: 'center' }}>
+    <View style={{ color: colors.text, flex: 1, padding: 8, }}>
+      <List.Subheader style={styles.profile}>
         Profile
       </List.Subheader>
       <View style={styles.account}>
-        <List.Item
-          title="Full Name"
-          description="Email"
+        <FlatList
+          data={entities}
+          renderItem={renderEntity}
+          keyExtractor={(item) => item.id}
+          removeClippedSubviews={true}
         />
       </View>
       {/**This is sections for the account settings */}
-      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
-        <List.Subheader style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginTop: 20 }}>Account</List.Subheader>
+      <TouchableOpacity onPress={() => navigation.navigate('Update')}>
+        <List.Subheader style={styles.content}>Account</List.Subheader>
         <Card style={styles.toggle}>
           <List.Item
             title="Edit Profile"
@@ -42,7 +78,7 @@ export default function setting({ navigation }) {
       </TouchableOpacity>
 
       {/**This is sections for the appearance settings */}
-      <List.Subheader style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginTop: 20 }}>Appearance</List.Subheader>
+      <List.Subheader style={styles.content}>Appearance</List.Subheader>
       <View >
         <Card style={styles.toggle}>
           <List.Item
@@ -54,8 +90,8 @@ export default function setting({ navigation }) {
       </View>
 
       {/**This is sections for the more settings */}
-      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
-        <List.Subheader style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginTop: 20 }}>More</List.Subheader>
+      <TouchableOpacity onPress={() => navigation.navigate('About')}>
+        <List.Subheader style={styles.content}>More</List.Subheader>
         <Card style={styles.toggle}>
           <List.Item
             title="About"
@@ -120,11 +156,22 @@ const styles = StyleSheet.create({
 
   },
   account: {
-    fontSize: 25,
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 5,
     marginHorizontal: 10,
-    textAlign: 'center',
-    marginLeft: 60,
+  },
+  starters: {
+    fontWeight: 'bold'
+  },
+  content: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 20,
+  },
+  profile: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 20,
+    textAlign: 'center'
   }
 });
