@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet,FlatList, Button} from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { firebase } from '../../firebase/config'
-import { IconButton} from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
 
 /**
@@ -13,68 +13,92 @@ import { useTheme } from '@react-navigation/native';
  * 
  * @returns Home screen for the application.
  */
- export default function addNote(props) {
+export default function addNote(props) {
   const [entities, setEntities] = useState([])
+  const [clickItemId, setClickItemId] = useState(null)
   const entityRef = firebase.firestore().collection('entities')
+ 
   const userID = props.extraData.id
-
   const { colors } = useTheme();
-  useEffect(() => {
-      entityRef
-          .where("authorID", "==", userID)
-          .orderBy('createdAt', 'desc')
-          .onSnapshot(
-              querySnapshot => {
-                  const newEntities = []
-                  querySnapshot.forEach(doc => {
-                      const entity = doc.data()
-                      entity.id = doc.id
-                      newEntities.push(entity)
-                  });
-                  setEntities(newEntities)
-              },
-              error => {
-                console.log(error)
-              }
-          )
-    }, [])
 
-/**
- * This function renders the item to show on the flat list
- * 
- * @param item the item stored in firebase
- * @returns the item
- */
-const renderEntity = ({item}) => {
+  useEffect(() => {
+    entityRef
+      .where("authorID", "==", userID)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(
+        querySnapshot => {
+          const newEntities = []
+          querySnapshot.forEach(doc => {
+            const entity = doc.data()
+            entity.id = doc.id
+            newEntities.push(entity)
+          });
+          setEntities(newEntities)
+        },
+        error => {
+          console.log(error)
+        }
+      )
+  }, [])
+
+  /**
+   * This function renders the item to show on the flat list
+   * 
+   * @param item the item stored in firebase
+   * @returns the item
+   */
+  const renderEntity = ({ item }) => {
+    const click = item.id === clickItemId ? true : false;
+
+    return (
+      <ClickItem
+        item={item}
+        onPress={() => {
+          setClickItemId(item.id);
+          alert('clicked')
+        }}
+      />
+    )
+  }
+
+  /**
+   * This fucntion make the notes displayed
+   * in the flat list clickable.
+   * 
+   * @param {item, onPress} - the item being selected 
+   * and what will occur when it is pressed 
+   * @returns a clickable flatlist
+   */
+  const ClickItem = ({ item, onPress }) => (
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.items}>
+      <Text style={styles.entityText}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
   return (
-      <View style={styles.items}>
-          <Text style={styles.entityText}>
-              {item.title}
-          </Text>
+    <View style={styles.listContainer}>
+      <View style={styles.top}>
+        <Text style={{ color: colors.text, fontSize: 40, marginTop: 20, marginHorizontal: 16, marginBottom: 5, fontWeight: 'bold' }}>Notes</Text>
+        <IconButton style={styles.asc}
+          icon="sort-ascending"
+          color={'#9AC4F8'}
+          size={37}
+          onPress={() => console.log('Pressed asc')}
+        />
+        <IconButton style={styles.edit}
+          icon="square-edit-outline"
+          color={'#9AC4F8'}
+          size={37}
+          onPress={() => console.log('Pressed Edit')}
+        />
       </View>
-  )
-}
-  return (
-    <View style={styles.listContainer}> 
-      <View style={styles.top}> 
-        <Text style={{color: colors.text, fontSize:40, marginTop:20, marginHorizontal: 16, marginBottom: 5, fontWeight:'bold'}}>Notes</Text>
-          <IconButton style={styles.asc}
-            icon="sort-ascending"
-            color={'#9AC4F8'}
-            size={37}
-            onPress={() => console.log('Pressed Asc')}
-          />
-          <IconButton style={styles.edit}
-            icon="square-edit-outline"
-            color={'#9AC4F8'}
-            size={37}
-            onPress={() => console.log('Pressed Edit')}
-          />
-      </View>
-      <FlatList 
+      <FlatList
         data={entities}
         renderItem={renderEntity}
         keyExtractor={(item) => item.id}
+        extraData={clickItemId}
         removeClippedSubviews={true}
       />
     </View>
@@ -88,29 +112,29 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
   },
-  items:{
-      backgroundColor: '#9AC4F8',
-      height: 100,
-      justifyContent: 'center',
-      marginVertical: 5,
-      marginHorizontal: 16,
-      padding: 20,
-      borderRadius:6
+  items: {
+    backgroundColor: '#9AC4F8',
+    height: 100,
+    justifyContent: 'center',
+    marginVertical: 5,
+    marginHorizontal: 16,
+    padding: 20,
+    borderRadius: 6
   },
-  top:{
+  top: {
     flexDirection: 'row'
   },
-  asc:{
-    marginTop:10,
-    left:170,
+  asc: {
+    marginTop: 10,
+    left: 170,
   },
-  edit:{
-    marginTop:10,
-    left:150,
+  edit: {
+    marginTop: 10,
+    left: 150,
   },
-  entityText:{
-    fontWeight:'bold',
-    fontSize:19
+  entityText: {
+    fontWeight: 'bold',
+    fontSize: 19
   }
 });
 
