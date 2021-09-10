@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, ScrollView, Keyboard, TouchableOpacity, View, TextInput, Image } from "react-native";
 import { firebase } from '../../firebase/config';
 import { actions, defaultActions, RichEditor, RichToolbar, } from "react-native-pell-rich-editor";
+import { useTheme, useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import HTMLView from "react-native-htmlview";
 
@@ -15,10 +16,10 @@ import HTMLView from "react-native-htmlview";
  * @returns The text editor screen.
  */
 export default function addNote(props) {
+  const navigation = useNavigation();
   const RichText = useRef(); //reference to the RichEditor component
   const [entityText, setEntityText] = useState('')
   const [titleEntry, setTitle] = useState('')
-  const [entities, setEntities] = useState([])
   const [image, setImage] = useState(null);
 
   //The collection that is created for the notes
@@ -57,6 +58,7 @@ export default function addNote(props) {
       entityRef
         .add(data)
         .then(_doc => {
+          navigation.navigate('Dashboard')
           setTitle('')
           setEntityText('')
           setImage(null)

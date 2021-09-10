@@ -13,15 +13,15 @@ import { useTheme, useNavigation } from '@react-navigation/native';
  * 
  * @returns settings screen for the application.
  */
-export default function setting(props) {
+export default function setting(prop) {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const dispatch = useDispatch();
-  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+  const themeReducers = useSelector(({ themeReducer }) => themeReducer);
 
   const [entities, setEntities] = useState([])
   const entityRef = firebase.firestore().collection('users')
-  const userID = props.extraData.id
+  const userID = prop.extraData.id
 
   useEffect(() => {
     entityRef
@@ -84,7 +84,7 @@ export default function setting(props) {
           <List.Item
             title="Dark Mode"
             left={props => <List.Icon  {...props} icon="moon-waxing-crescent" />}
-            right={() => <Switch value={themeReducer.theme} onValueChange={(val) => dispatch(themeActions.ToggleTheme(val))} />}
+            right={() => <Switch value={themeReducers.theme} onValueChange={(val) => dispatch(themeActions.ToggleTheme(val))} />}
           />
         </Card>
       </View>
@@ -106,7 +106,7 @@ export default function setting(props) {
           title="Logout"
           onPress={() => firebase.auth()
             .signOut()
-            .then(() => DevSettings.reload())}
+            .then(() =>  navigation.navigate('Login'))}
         />
       </TouchableOpacity>
     </View>
