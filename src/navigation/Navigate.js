@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import firebase from 'firebase'
 
 //Imports to other files
-import { Button } from 'react-native';
 import Dashboard from '../screens/main/Dashboard'
 import camera from '../screens/main/Photo';
 import AddNote from '../screens/main/Editor';
@@ -46,17 +45,7 @@ const MainNavigator = (nav) => {
 const PhotoNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Add Photo" component={camera} options={{
-        headerLeft: () => (
-          //Creating a back button to go back to previous page
-          <Button
-            title="Back"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
-        ),
-      }} />
+      <Stack.Screen name="Add Photo" component={camera}/>
     </Stack.Navigator>
   );
 }
@@ -189,11 +178,9 @@ const Menu = (nav) => {
 const LoginRegisterStack = createStackNavigator();
 
 export default () => {
-  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-
-
+  const themeReducers = useSelector(({ themeReducer }) => themeReducer);
+  const [users, setUser] = useState(null);
+  
   useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
     firebase.auth().onAuthStateChanged(user => {
@@ -203,25 +190,22 @@ export default () => {
           .get()
           .then((document) => {
             const userData = document.data()
-            setLoading(false)
             setUser(userData)
           })
           .catch((error) => {
-            setLoading(false)
+            console.log(error)
           });
-      } else {
-        setLoading(false)
       }
     });
   }, []);
 
   return (
-    <NavigationContainer theme={themeReducer.theme ? DarkTheme : DefaultTheme}>
-      <PaperProvider theme={themeReducer.theme ? PaperDarkTheme : PaperDefaultTheme}>
+    <NavigationContainer theme={themeReducers.theme ? DarkTheme : DefaultTheme}>
+      <PaperProvider theme={themeReducers.theme ? PaperDarkTheme : PaperDefaultTheme}>
         <LoginRegisterStack.Navigator screenOptions={screenOptionStyle}>
-          {user ? (
+          {users ? (
             <LoginRegisterStack.Screen name="Menu" options={{ headerShown: false }}>
-              {props => (<Menu{...props} extraData={user} />)}
+              {props => (<Menu{...props} extraData={users} />)}
             </LoginRegisterStack.Screen>
           ) : (
             <>
