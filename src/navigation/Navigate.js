@@ -10,7 +10,7 @@ import firebase from 'firebase'
 
 //Imports to other files
 import Dashboard from '../screens/main/Dashboard'
-import camera from '../screens/main/Photo';
+import camera from '../screens/main/Camera';
 import AddNote from '../screens/main/Editor';
 import Settings from '../screens/main/Settings';
 import LoginScreen from '../screens/login/LoginScreen';
@@ -45,7 +45,7 @@ const MainNavigator = (nav) => {
 const PhotoNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Add Photo" component={camera}/>
+      <Stack.Screen name="Camera" component={camera}/>
     </Stack.Navigator>
   );
 }
