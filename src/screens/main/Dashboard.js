@@ -15,9 +15,11 @@ import { useTheme } from '@react-navigation/native';
  */
 export default function addNote(props) {
   const [entities, setEntities] = useState([])
+  const [ascEntities, setAscEntities] = useState([])
+  const [ordered, setOrder] = useState(false);
   const [clickItemId, setClickItemId] = useState(null)
   const entityRef = firebase.firestore().collection('entities')
- 
+
   const userID = props.extraData.id
   const { colors } = useTheme();
 
@@ -34,6 +36,26 @@ export default function addNote(props) {
             newEntities.push(entity)
           });
           setEntities(newEntities)
+        },
+        error => {
+          console.log(error)
+        }
+      )
+  }, [])
+
+  useEffect(() => {
+    entityRef
+      .where("authorID", "==", userID)
+      .orderBy('createdAt', 'asc')
+      .onSnapshot(
+        querySnapshot => {
+          const newEntities = []
+          querySnapshot.forEach(doc => {
+            const entity = doc.data()
+            entity.id = doc.id
+            newEntities.push(entity)
+          });
+          setAscEntities(newEntities)
         },
         error => {
           console.log(error)
@@ -62,6 +84,24 @@ export default function addNote(props) {
   }
 
   /**
+   * Boolean to set the order decending to false
+   * so the notes on the dashboard orders by 
+   * ascending. 
+   */
+  const order = () => {
+    setOrder(true);
+  }
+
+  /**
+   * Boolean to set the order ascending to false
+   * so the notes on the dashboard orders by 
+   * descending. 
+   */
+  const unOrder = () => {
+    setOrder(false);
+  }
+
+  /**
    * This fucntion make the notes displayed
    * in the flat list clickable.
    * 
@@ -81,26 +121,55 @@ export default function addNote(props) {
     <View style={styles.listContainer}>
       <View style={styles.top}>
         <Text style={{ color: colors.text, fontSize: 40, marginTop: 20, marginHorizontal: 16, marginBottom: 5, fontWeight: 'bold' }}>Notes</Text>
-        <IconButton style={styles.asc}
-          icon="sort-ascending"
-          color={'#9AC4F8'}
-          size={37}
-          onPress={() => console.log('Pressed asc')}
-        />
-        <IconButton style={styles.edit}
-          icon="square-edit-outline"
-          color={'#9AC4F8'}
-          size={37}
-          onPress={() => console.log('Pressed Edit')}
-        />
+
+        {/* If the icon button is clicked the notes will sort oldest to latest */}
+        {ordered && (
+          <View style={styles.top}>
+            <IconButton style={styles.asc}
+              icon="sort-ascending"
+              color={'#9AC4F8'}
+              size={37}
+              onPress={unOrder}
+            />
+          </View>
+        )}
+
+        {/* If the icon button is clicked the notes will sort latest to oldest */}
+        {!ordered && (
+          <View style={styles.top}>
+            <IconButton style={styles.desc}
+              icon="sort-descending"
+              color={'#9AC4F8'}
+              size={37}
+              onPress={order}
+            />
+          </View>
+
+        )}
       </View>
-      <FlatList
-        data={entities}
-        renderItem={renderEntity}
-        keyExtractor={(item) => item.id}
-        extraData={clickItemId}
-        removeClippedSubviews={true}
-      />
+
+      {/* According to what boolean is true the flatlist will show that order */}
+      {ordered && (
+        <FlatList
+          data={ascEntities}
+          renderItem={renderEntity}
+          keyExtractor={(item) => item.id}
+          extraData={clickItemId}
+          removeClippedSubviews={true}
+        />
+      )}
+
+      {!ordered && (
+        <FlatList
+          data={entities}
+          renderItem={renderEntity}
+          keyExtractor={(item) => item.id}
+          extraData={clickItemId}
+          removeClippedSubviews={true}
+        />
+
+      )}
+
     </View>
   );
 }
@@ -126,7 +195,11 @@ const styles = StyleSheet.create({
   },
   asc: {
     marginTop: 10,
-    left: 170,
+    left: 210,
+  },
+  desc: {
+    marginTop: 10,
+    left: 210,
   },
   edit: {
     marginTop: 10,
