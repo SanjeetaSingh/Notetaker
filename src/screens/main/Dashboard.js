@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { firebase } from '../../firebase/config'
 import { IconButton } from 'react-native-paper';
-import { useTheme } from '@react-navigation/native';
+import { useTheme, useNavigation } from '@react-navigation/native';
 
 /**
  * This function created the home screen of the application.
@@ -19,10 +19,15 @@ export default function addNote(props) {
   const [ordered, setOrder] = useState(false);
   const [clickItemId, setClickItemId] = useState(null)
   const entityRef = firebase.firestore().collection('entities')
-
+  const navigation = useNavigation();
   const userID = props.extraData.id
   const { colors } = useTheme();
 
+  /**
+   * Collection created in decending order
+   * and get called on when user wants to veiw it
+   * latest to oldest.
+   */
   useEffect(() => {
     entityRef
       .where("authorID", "==", userID)
@@ -43,6 +48,11 @@ export default function addNote(props) {
       )
   }, [])
 
+  /**
+   * Collection created in ascending order
+   * and get called on when user wants to veiw it
+   * oldest to latest.
+   */
   useEffect(() => {
     entityRef
       .where("authorID", "==", userID)
@@ -70,8 +80,6 @@ export default function addNote(props) {
    * @returns the item
    */
   const renderEntity = ({ item }) => {
-    const click = item.id === clickItemId ? true : false;
-
     return (
       <ClickItem
         item={item}
@@ -121,6 +129,16 @@ export default function addNote(props) {
     <View style={styles.listContainer}>
       <View style={styles.top}>
         <Text style={{ color: colors.text, fontSize: 40, marginTop: 20, marginHorizontal: 16, marginBottom: 5, fontWeight: 'bold' }}>Notes</Text>
+       
+        {/* An add button that takes user to the editor page */}
+        <View style={styles.add}>
+          <IconButton style={styles.asc}
+            icon="plus-circle-outline"
+            color={'#9AC4F8'}
+            size={37}
+            onPress={() => navigation.navigate('Editor')}
+          />
+        </View>
 
         {/* If the icon button is clicked the notes will sort oldest to latest */}
         {ordered && (
@@ -169,7 +187,6 @@ export default function addNote(props) {
         />
 
       )}
-
     </View>
   );
 }
@@ -195,19 +212,19 @@ const styles = StyleSheet.create({
   },
   asc: {
     marginTop: 10,
-    left: 210,
+    left: 90,
   },
   desc: {
     marginTop: 10,
-    left: 210,
-  },
-  edit: {
-    marginTop: 10,
-    left: 150,
+    left: 90,
   },
   entityText: {
     fontWeight: 'bold',
     fontSize: 19
+  },
+  add: {
+    flexDirection:'row',
+    left:120
   }
 });
 

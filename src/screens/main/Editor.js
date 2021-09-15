@@ -1,11 +1,13 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, ScrollView, Keyboard, TouchableOpacity, View, TextInput, Image } from "react-native";
+import React, { useRef, useState } from "react";
+import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 import { firebase } from '../../firebase/config';
-import { actions, defaultActions, RichEditor, RichToolbar, } from "react-native-pell-rich-editor";
-import { useTheme, useNavigation } from '@react-navigation/native';
+import { actions, RichEditor, RichToolbar, } from "react-native-pell-rich-editor";
+import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import HTMLView from "react-native-htmlview";
+import { Button } from 'react-native-paper';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 /**
  * Function created the editor screen which lets the
@@ -21,6 +23,8 @@ export default function addNote(props) {
   const [entityText, setEntityText] = useState('')
   const [titleEntry, setTitle] = useState('')
   const [image, setImage] = useState(null);
+
+  const [state, setState] = useState({});
 
   //The collection that is created for the notes
   const entityRef = firebase.firestore().collection('entities')
@@ -43,8 +47,9 @@ export default function addNote(props) {
     }
   };
 
-
-  // Function handles logic to save the text that gets saved to firebase 
+  /**
+   * Function handles logic to save the text that gets saves to firebase 
+   */
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
       const timestamp = firebase.firestore.FieldValue.serverTimestamp();
@@ -59,18 +64,16 @@ export default function addNote(props) {
         .add(data)
         .then(_doc => {
           navigation.navigate('Dashboard')
-          setTitle('')
-          setEntityText('')
-          setImage(null)
-          Keyboard.dismiss()
+          return () => {
+            setState({});
+          };
         })
         .catch((error) => {
           alert(error)
         });
     }
   }
-  
-  
+
   return (
     <View style={styles.container}>
       {/* Functionalities for the text editor */}
@@ -86,10 +89,14 @@ export default function addNote(props) {
         iconSize={20}
         //The components that will be inclued in the toolbar
         actions={[
-          ...defaultActions,
+          actions.keyboard,
+          actions.setBold,
+          actions.setItalic,
+          actions.setUnderline,
+          actions.insertBulletsList,
           actions.insertOrderedList,
           actions.insertImage,
-          actions.setStrikethrough,
+          actions.insertLink,
           actions.heading1,
           actions.heading2,
         ]}
@@ -104,7 +111,8 @@ export default function addNote(props) {
         }}
       />
 
-      <ScrollView style={styles.container}>
+      {/* Makes sure that the keyboard moves with the amount of text getting put in the note */}
+      <KeyboardAwareScrollView style={styles.container}>
         {/* Creates the text input for the notes title */}
         <TextInput
           style={styles.title}
@@ -114,9 +122,10 @@ export default function addNote(props) {
           value={titleEntry}
           underlineColorAndroid="transparent"
         />
+
         {/* Inserts the image to the screen under the title */}
         {image && <Image source={{ uri: image }} style={styles.imageCon} />}
-      
+
         <RichEditor
           //Functionalities for the text editor
           scrollEnabled={false}
@@ -126,17 +135,19 @@ export default function addNote(props) {
           placeholder={"start write here..."}
           // This to avoid html tags being produced when the text gets saved
           onChange={(text) => setEntityText(text.replace(/(<([^>]+)>)/ig, ''))}
-          value={""}
+          value={entityText}
         />
+      </KeyboardAwareScrollView>
 
-      </ScrollView>
-
-      {/* Button that saves the note to firebase*/}
-      <View style={styles.formContainer}>
-            <TouchableOpacity onPress={onAddButtonPress}>
-              <Text>Save</Text>
-            </TouchableOpacity>
-          </View>
+      {/* Button that saves the note to firebase */}
+      <Button
+        style={styles.buttonSize}
+        onPress={onAddButtonPress}
+        mode="contained">
+        <Icon name="save" size={24} color="#fff" />
+        <View style={{ width: 5, height: 1 }} />
+        <Text style={styles.buttonTextStyle}>Save Note</Text>
+      </Button>
     </View>
   );
 }
@@ -167,27 +178,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#515156",
   },
-  formContainer: {
-    backgroundColor: '#9AC4F8',
-    marginLeft: 150,
-    marginRight: 150,
-    height: 48,
-    borderRadius: 130,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 2,
-    marginBottom: 12,
-  },
   title: {
+    flexDirection: 'row',
     height: 60,
     borderRadius: 5,
     backgroundColor: 'white',
-    paddingLeft: 16,
+    paddingLeft: 30,
     marginVertical: 5,
     marginHorizontal: 30,
     fontSize: 25,
     marginTop: 10,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   imageCon: {
     height: 160,
@@ -196,5 +197,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     borderRadius: 5,
+  },
+  buttonTextStyle: {
+    fontFamily: "Al Nile",
+    color: '#fff'
+  },
+  buttonSize: {
+    width: 170,
+    marginBottom: 30,
+    left: 210,
+    backgroundColor: '#9AC4F8'
   }
 });
