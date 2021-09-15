@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import 'react-native-gesture-handler';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
-import { Provider as PaperProvider, DefaultTheme as PaperDefaultTheme, DarkTheme as PaperDarkTheme, } from 'react-native-paper';
+import { NavigationContainer, DefaultTheme, DarkTheme, useNavigation } from '@react-navigation/native'
+import { Provider as PaperProvider, DefaultTheme as PaperDefaultTheme, DarkTheme as PaperDarkTheme, Button } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from "@react-navigation/stack";
+import { Alert } from 'react-native';
 import { useSelector } from "react-redux";
 import firebase from 'firebase'
 
@@ -18,9 +19,11 @@ import RegistrationScreen from '../screens/login/RegisterScreen';
 import About from '../screens/main/About'
 import Update from '../screens/main/Update'
 import DailyToDo from '../screens/main/DailyToDo';
+import Search from '../screens/main/Search';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
 
 /**
  * This function creates a header for the dashboard screen.
@@ -28,10 +31,41 @@ const Stack = createStackNavigator();
  * @returns The screen header.
  */
 const MainNavigator = (nav) => {
+  const navigation = useNavigation();
+
+  const showConfirmDialog = () => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to go back without saving?",
+      [
+        // The "Yes" button that will take back to dashboard
+        {
+          text: "Yes",
+          onPress: () => { navigation.navigate('Dashboard') }
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Dashboard" >
         {props => (<Dashboard{...props} extraData={nav.extraData} />)}
+      </Stack.Screen>
+
+      <Stack.Screen name="Editor" options={{
+        headerLeft: () => (
+          <Button icon="arrow-left" color='#fff' onPress={() => showConfirmDialog()}>
+            Back
+          </Button>
+        ),
+      }}>
+        {props => (<AddNote{...props} extraData={nav.extraData} />)}
       </Stack.Screen>
     </Stack.Navigator>
   );
@@ -45,7 +79,7 @@ const MainNavigator = (nav) => {
 const PhotoNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Camera" component={camera}/>
+      <Stack.Screen name="Camera" component={camera} />
     </Stack.Navigator>
   );
 }
@@ -68,15 +102,15 @@ const SettingsNavigator = (nav) => {
 }
 
 /**
- * This function creates a header for editor screen.
+ * This function creates a header for the settings screen.
  * 
  * @returns The screen header.
  */
-const NotesNavigator = (nav) => {
+const SearchNavigator = (nav) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Editor">
-        {props => (<AddNote{...props} extraData={nav.extraData} />)}
+      <Stack.Screen name="Search Notes">
+        {props => (<Search{...props} extraData={nav.extraData} />)}
       </Stack.Screen>
     </Stack.Navigator>
   );
@@ -148,15 +182,15 @@ const Menu = (nav) => {
 
       {/* The Editor tab navigation */}
       <Tab.Screen
-        name="Edit" options={{
-          tabBarLabel: 'Add Notes',
+        name="search" options={{
+          tabBarLabel: 'Search Notes',
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-add-circle" color={color} size={26} />
+            <Ionicons name="search" color={color} size={26} />
           ),
           tabBarActiveTintColor: '#9AC4F8',
           tabBarInactiveTintColor: 'gray',
         }}>
-        {props => (<NotesNavigator {...props} extraData={nav.extraData} />)}
+        {props => (<SearchNavigator {...props} extraData={nav.extraData} />)}
       </Tab.Screen>
 
       {/* The Settings tab navigation */}
@@ -180,7 +214,7 @@ const LoginRegisterStack = createStackNavigator();
 export default () => {
   const themeReducers = useSelector(({ themeReducer }) => themeReducer);
   const [users, setUser] = useState(null);
-  
+
   useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
     firebase.auth().onAuthStateChanged(user => {
@@ -231,4 +265,18 @@ const screenOptionStyle = {
     fontSize: 25,
   },
   headerTintColor: "white",
+  screen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  box: {
+    width: 300,
+    height: 300,
+    backgroundColor: "red",
+    marginBottom: 30,
+  },
+  text: {
+    fontSize: 30,
+  },
 };
