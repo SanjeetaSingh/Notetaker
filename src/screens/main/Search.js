@@ -16,7 +16,7 @@ export default function Search({ navigation }) {
   const { colors } = useTheme();
 
   //Initializing text and title being searched
-  var FileInfo = { fileTitle: '', fileText: '' }
+  var FileInfo = { id:'', fileTitle: '', fileText: '' }
 
   const [searchText, setSearchText] = useState("");
   const [matches, setMatches] = useState([]);
@@ -28,6 +28,7 @@ export default function Search({ navigation }) {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         FileInfo = {
+          id:doc.id,
           fileTitle: data.title,
           fileText: data.text,
         }
@@ -96,6 +97,7 @@ export default function Search({ navigation }) {
                       {/* When the note is clicked the screen moves to the editor screen to update */}
                       <ListItem style={styles.content} key={index} bottomDivider onPress={() => {
                         navigation.navigate('Editor', {
+                          id:fileInfo.id,
                           fileTitle: fileInfo.fileTitle,
                           fileText: fileInfo.fileText
                         })
@@ -103,7 +105,7 @@ export default function Search({ navigation }) {
                         {/* Shows the title or text for the search */}
                         <ListItem.Content>
                           <ListItem.Title>{fileInfo.fileTitle}</ListItem.Title>
-                          <ListItem.Subtitle numberOfLines={1}>{fileInfo.fileText}</ListItem.Subtitle>
+                          <ListItem.Subtitle numberOfLines={1}>{fileInfo.fileText.replace(/(<([^>]+)>)/ig, '')}</ListItem.Subtitle>
                         </ListItem.Content>
                         <Icon name="edit" color="gray"/>
                       </ListItem>

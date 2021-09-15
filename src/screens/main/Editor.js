@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 import { firebase } from '../../firebase/config';
 import { actions, RichEditor, RichToolbar, } from "react-native-pell-rich-editor";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -19,9 +19,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
  */
 export default function addNote(props) {
   const navigation = useNavigation();
+  const route = useRoute();
+
   const RichText = useRef(); //reference to the RichEditor component
-  const [entityText, setEntityText] = useState('')
-  const [titleEntry, setTitle] = useState('')
+  const [entityText, setEntityText] = useState(route.params ? route.params.fileText : '');
+  const [titleEntry, setTitle] = useState(route.params ? route.params.fileTitle : '')
+  const [fileID ] = useState(route.params ? route.params.id : '')
   const [image, setImage] = useState(null);
 
   const [state, setState] = useState({});
@@ -61,7 +64,8 @@ export default function addNote(props) {
         images: image,
       };
       entityRef
-        .add(data)
+      .doc(fileID ? fileID : undefined)
+        .set(data)
         .then(_doc => {
           navigation.navigate('Dashboard')
           return () => {
@@ -134,8 +138,9 @@ export default function addNote(props) {
           style={styles.rich}
           placeholder={"start write here..."}
           // This to avoid html tags being produced when the text gets saved
-          onChange={(text) => setEntityText(text.replace(/(<([^>]+)>)/ig, ''))}
+          onChange={(text) => setEntityText(text)}
           value={entityText}
+          initialContentHTML={entityText}
         />
       </KeyboardAwareScrollView>
 
