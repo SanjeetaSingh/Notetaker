@@ -25,6 +25,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
+
 /**
  * This function creates a header for the dashboard screen.
  * 
@@ -32,7 +33,6 @@ const Stack = createStackNavigator();
  */
 const MainNavigator = (nav) => {
   const navigation = useNavigation();
-
   const showConfirmDialog = () => {
     return Alert.alert(
       "Are your sure?",
@@ -51,7 +51,6 @@ const MainNavigator = (nav) => {
       ]
     );
   };
-
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Dashboard" >
@@ -107,10 +106,39 @@ const SettingsNavigator = (nav) => {
  * @returns The screen header.
  */
 const SearchNavigator = (nav) => {
+  const navigation = useNavigation();
+  const showConfirmDialog = () => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to go back without saving?",
+      [
+        // The "Yes" button that will take back to dashboard
+        {
+          text: "Yes",
+          onPress: () => { navigation.navigate('Search Notes') }
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Search Notes">
         {props => (<Search{...props} extraData={nav.extraData} />)}
+      </Stack.Screen>
+
+      <Stack.Screen name="Editor" options={{
+        headerLeft: () => (
+          <Button icon="arrow-left" color='#fff' onPress={() => showConfirmDialog()}>
+            Back
+          </Button>
+        ),
+      }}>
+        {props => (<AddNote{...props} extraData={nav.extraData} />)}
       </Stack.Screen>
     </Stack.Navigator>
   );
@@ -183,7 +211,7 @@ const Menu = (nav) => {
       {/* The Editor tab navigation */}
       <Tab.Screen
         name="search" options={{
-          tabBarLabel: 'Search Notes',
+          tabBarLabel: 'Search',
           tabBarIcon: ({ color }) => (
             <Ionicons name="search" color={color} size={26} />
           ),
