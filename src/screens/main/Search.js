@@ -16,7 +16,7 @@ export default function Search({ navigation }) {
   const { colors } = useTheme();
 
   //Initializing text and title being searched
-  var FileInfo = { id:'', fileTitle: '', fileText: '' }
+  var FileInfo = { id: '', fileTitle: '', fileText: '' }
 
   const [searchText, setSearchText] = useState("");
   const [matches, setMatches] = useState([]);
@@ -28,7 +28,7 @@ export default function Search({ navigation }) {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         FileInfo = {
-          id:doc.id,
+          id: doc.id,
           fileTitle: data.title,
           fileText: data.text,
         }
@@ -54,11 +54,11 @@ export default function Search({ navigation }) {
     <View style={{ flex: 1 }}>
       {/* Displays the search bar to search the title or text of note*/}
       <SearchBar
-        placeholder="Search..."
+        placeholder="Search and Edit Note..."
         onChangeText={(value) => setSearchText(value)}
         platform="android"
-        containerStyle={{ backgroundColor: "#fff", marginLeft:10, marginRight:10, marginTop:10, borderRadius:5}}
-        inputContainerStyle={{ backgroundColor: "#fff",marginLeft:10, width:370, borderRadius:5}}
+        containerStyle={{ backgroundColor: "#fff", marginLeft: 10, marginRight: 10, marginTop: 10, borderRadius: 5}}
+        inputContainerStyle={{ backgroundColor: "#fff", marginLeft: 10, width: 370, borderRadius: 5 }}
         buttonStyle={{ color: "#87909A" }}
         searchIcon={{ iconStyle: { color: "#87909A" } }}
         clearIcon={{ iconStyle: { color: "#87909A" } }}
@@ -76,16 +76,13 @@ export default function Search({ navigation }) {
                 {/* A gray divder to split the notes up */}
                 <Divider
                   orientation="horizontal"
-                  subHeader={<Text style={{ color: colors.text, fontSize: 20}}>{"\t"}{index == 0 ? "Title Matches" : "Text Matches"}</Text>}
-                  subHeaderStyle={{ color: "white" }}
-                  width={25}
-                  color='#efefef'
-
+                  subHeader={<Text style={{ color: colors.text, fontSize: 22, marginTop: 0, fontWeight:'bold' }}>{"\t"}{index == 0 ? "Matches for Title" : "Matches for Text"}</Text>}
+                  subHeaderStyle={{ color: "white", marginTop:20 }}
                 />
                 {/* Shows the result of the search in a list */}
                 {array?.flatMap((fileInfo, index) => {
                   return (
-                    <View key={index}>
+                    <View key={index} >
                       <View bottomDivider style={{
                         borderBottomColor: '#D0D0D0',
                         borderBottomWidth: 2,
@@ -95,9 +92,9 @@ export default function Search({ navigation }) {
                         marginTop: 7,
                       }} />
                       {/* When the note is clicked the screen moves to the editor screen to update */}
-                      <ListItem style={styles.content} key={index} bottomDivider onPress={() => {
+                      <ListItem containerStyle={styles.content} key={index} bottomDivider onPress={() => {
                         navigation.navigate('Editor', {
-                          id:fileInfo.id,
+                          id: fileInfo.id,
                           fileTitle: fileInfo.fileTitle,
                           fileText: fileInfo.fileText
                         })
@@ -107,7 +104,7 @@ export default function Search({ navigation }) {
                           <ListItem.Title>{fileInfo.fileTitle}</ListItem.Title>
                           <ListItem.Subtitle numberOfLines={1}>{fileInfo.fileText.replace(/(<([^>]+)>)/ig, '')}</ListItem.Subtitle>
                         </ListItem.Content>
-                        <Icon name="edit" color="gray"/>
+                        <Icon name="edit" color="gray" />
                       </ListItem>
                     </View>
                   )
@@ -128,6 +125,7 @@ const styles = StyleSheet.create({
   content: {
     marginLeft: 20,
     marginRight: 20,
-    backgroundColor: '#9AC4F8',
+    backgroundColor:"#9AC4F8",
+    borderRadius:5,
   },
 });
