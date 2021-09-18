@@ -7,7 +7,7 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 
 import Menu from './src/navigation/Navigate'
-import reducers from "../notetaking-app/src/redux/reducers/index.reducers";
+import reducers from "../notetaking-app/src/theme/redux/reducers/index.reducers";
 var middlewares = applyMiddleware(thunk);
 const store = createStore(reducers, middlewares);
 
