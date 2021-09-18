@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { SearchBar, Icon, ListItem, Text, Divider } from 'react-native-elements';
 import { firebase } from '../../firebase/config'
 import { useTheme } from '@react-navigation/native';
-
+import Info from '../../components/Headers/info';
 /**
  * This screen lets the user search their notes 
  * by entering the title or text of the note.
@@ -52,6 +52,7 @@ export default function Search({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
+      <Info style={{color: colors.text}}/>
       {/* Displays the search bar to search the title or text of note*/}
       <SearchBar
         placeholder="Search and Edit Note..."

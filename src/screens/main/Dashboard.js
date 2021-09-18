@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { firebase } from '../../firebase/config'
 import { IconButton } from 'react-native-paper';
-import { useTheme, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import NoteTitle from '../../components/Headers/Title';
 
 /**
  * This function created the home screen of the application.
@@ -21,7 +22,6 @@ export default function addNote(props) {
   const entityRef = firebase.firestore().collection('entities')
   const navigation = useNavigation();
   const userID = props.extraData.id
-  const { colors } = useTheme();
 
   /**
    * Collection created in decending order
@@ -128,8 +128,7 @@ export default function addNote(props) {
   return (
     <View style={styles.listContainer}>
       <View style={styles.top}>
-        <Text style={{ color: colors.text, fontSize: 40, marginTop: 20, marginHorizontal: 16, marginBottom: 5, fontWeight: 'bold' }}>Notes</Text>
-       
+        <NoteTitle/>
         {/* An add button that takes user to the editor page */}
         <View style={styles.add}>
           <IconButton style={styles.asc}

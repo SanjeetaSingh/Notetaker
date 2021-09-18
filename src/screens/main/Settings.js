@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Button, DevSettings, FlatList } from "react-native";
-import { Card, List, Switch } from 'react-native-paper';
+import { Card, List } from 'react-native-paper';
 import { firebase } from "../../firebase/config";
-import * as themeActions from "../../redux/actions/theme.action";
-import { useDispatch, useSelector } from "react-redux";
 import { useTheme, useNavigation } from '@react-navigation/native';
+
+import AccountCard from "../../components/Cards/accountCard";
+import AppearanceCard from "../../components/Cards/appearanceCard";
+import MoreCard from "../../components/Cards/moreCard";
+
+import {AccountHeaders, SubHeaders, ModeHeaders, ProfileHeader } from "../../components/Headers/subHeaders";
 
 /**
  * Function creates the settings page for the application
@@ -16,8 +20,6 @@ import { useTheme, useNavigation } from '@react-navigation/native';
 export default function setting(prop) {
   const navigation = useNavigation();
   const { colors } = useTheme();
-  const dispatch = useDispatch();
-  const themeReducers = useSelector(({ themeReducer }) => themeReducer);
 
   const [entities, setEntities] = useState([])
   const entityRef = firebase.firestore().collection('users')
@@ -55,9 +57,7 @@ export default function setting(prop) {
 
   return (
     <View style={{ color: colors.text, flex: 1, padding: 8, }}>
-      <List.Subheader style={styles.profile}>
-        Profile
-      </List.Subheader>
+      <ProfileHeader/>
       <View style={styles.account}>
         <FlatList
           data={entities}
@@ -66,38 +66,26 @@ export default function setting(prop) {
           removeClippedSubviews={true}
         />
       </View>
+
+      <AccountHeaders />
+
       {/**This is sections for the account settings */}
       <TouchableOpacity onPress={() => navigation.navigate('Update')}>
-        <List.Subheader style={styles.content}>Account</List.Subheader>
-        <Card style={styles.toggle}>
-          <List.Item
-            title="Edit Profile"
-            left={props => <List.Icon {...props} icon="account" />}
-          />
-        </Card>
+
+        <AccountCard />
       </TouchableOpacity>
 
       {/**This is sections for the appearance settings */}
-      <List.Subheader style={styles.content}>Appearance</List.Subheader>
-      <View >
-        <Card style={styles.toggle}>
-          <List.Item
-            title="Dark Mode"
-            left={props => <List.Icon  {...props} icon="moon-waxing-crescent" />}
-            right={() => <Switch value={themeReducers.theme} onValueChange={(val) => dispatch(themeActions.ToggleTheme(val))} />}
-          />
-        </Card>
+     <ModeHeaders/>
+      <View>
+        <AppearanceCard />
       </View>
 
+      <SubHeaders />
       {/**This is sections for the more settings */}
       <TouchableOpacity onPress={() => navigation.navigate('About')}>
-        <List.Subheader style={styles.content}>More</List.Subheader>
-        <Card style={styles.toggle}>
-          <List.Item
-            title="About"
-            left={props => <List.Icon {...props} icon="information" />}
-          />
-        </Card>
+
+        <MoreCard />
       </TouchableOpacity>
 
       {/**This is to logout of the application */}
@@ -106,7 +94,7 @@ export default function setting(prop) {
           title="Logout"
           onPress={() => firebase.auth()
             .signOut()
-            .then(() =>  navigation.navigate('Login'))}
+            .then(() => navigation.navigate('Login'))}
         />
       </TouchableOpacity>
     </View>
@@ -163,15 +151,5 @@ const styles = StyleSheet.create({
   starters: {
     fontWeight: 'bold'
   },
-  content: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 20,
-  },
-  profile: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 20,
-    textAlign: 'center'
-  }
+
 });
