@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { firebase } from '../../firebase/config'
+import Logos from '../../components/Logo/logos';
 
 /**
  * This function is to create the register screen
@@ -61,10 +62,7 @@ export default function RegistrationScreen({navigation}) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Image
-                    style={styles.logo}
-                    source={require('../../../src/assets/logos.png')}
-                />
+                <Logos/>
                 <TextInput
                 //The full name text input
                     style={styles.input}
