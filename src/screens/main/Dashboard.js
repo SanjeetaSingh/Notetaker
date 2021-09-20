@@ -1,6 +1,6 @@
-import 'react-native-gesture-handler';
+import { Swipeable } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Alert } from 'react-native';
 import { firebase } from '../../firebase/config'
 import { IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -18,7 +18,7 @@ export default function addNote(props) {
   const [entities, setEntities] = useState([])
   const [ascEntities, setAscEntities] = useState([])
   const [ordered, setOrder] = useState(false);
-  const [clickItemId, setClickItemId] = useState(null)
+
   const entityRef = firebase.firestore().collection('entities')
   const navigation = useNavigation();
   const userID = props.extraData.id
@@ -110,6 +110,71 @@ export default function addNote(props) {
   }
 
   /**
+   * Delete the note from dashboard and firebase.
+   * 
+   * @param noteId the id of the note
+   */
+  const deleteNote = (noteId) => {
+    entityRef
+      .doc(noteId)
+      .delete()
+      .then(() => {
+        //nothing
+      })
+      .catch((error) => {
+        Alert.alert(error)
+      })
+  }
+
+  /**
+   * Confirm that the user wants to delete the note or not.
+   * 
+   * @param noteId the id of the note being deleted
+   */
+  const confirmDelete = (noteId) => {
+    Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to delete this note?",
+      [
+        // The "Yes" button that will delete note
+        {
+          text: "Yes",
+          onPress: () => { deleteNote(noteId) }
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "No",
+        },
+      ],
+
+    );
+  }
+
+  /**
+   * The settings for when the user wants to swipe to the right.
+   * to delete the note. 
+   * 
+   * @param params - dragX is the setting of the swipe and onpress the action of swipe.
+   * @returns a swipe that shows a button delete.
+   */
+  const RightActions = ({ dragX, onPress }) => {
+    const scale = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    })
+    return (
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.rightSwipe}>
+          <Animated.Text style={[styles.textSwipe, { transform: [{ scale }] }]}>Delete</Animated.Text>
+        </View>
+      </TouchableOpacity>
+
+    )
+  }
+
+  /**
    * This fucntion make the notes displayed
    * in the flat list clickable.
    * 
@@ -118,17 +183,21 @@ export default function addNote(props) {
    * @returns a clickable flatlist
    */
   const ClickItem = ({ item, onPress }) => (
-    <TouchableOpacity
-      onPress={onPress}
-      style={styles.items}>
-      <Text style={styles.entityText}>{item.title}</Text>
-    </TouchableOpacity>
+    <Swipeable
+      renderRightActions={(progress, dragX) => <RightActions dragX={dragX} onPress={() => confirmDelete(item.id)} />}
+    >
+      <View
+        style={styles.items}>
+        <Text style={styles.entityText}>{item.title}</Text>
+      </View>
+    </Swipeable>
+
   );
 
   return (
     <View style={styles.listContainer}>
       <View style={styles.top}>
-        <NoteTitle/>
+        <NoteTitle />
         {/* An add button that takes user to the editor page */}
         <View style={styles.add}>
           <IconButton style={styles.asc}
@@ -171,7 +240,6 @@ export default function addNote(props) {
           data={ascEntities}
           renderItem={renderEntity}
           keyExtractor={(item) => item.id}
-          extraData={clickItemId}
           removeClippedSubviews={true}
         />
       )}
@@ -181,10 +249,8 @@ export default function addNote(props) {
           data={entities}
           renderItem={renderEntity}
           keyExtractor={(item) => item.id}
-          extraData={clickItemId}
           removeClippedSubviews={true}
         />
-
       )}
     </View>
   );
@@ -222,8 +288,21 @@ const styles = StyleSheet.create({
     fontSize: 19
   },
   add: {
-    flexDirection:'row',
-    left:120
+    flexDirection: 'row',
+    left: 120
+  },
+  rightSwipe: {
+    backgroundColor: '#ff0000',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    top: 5,
+    borderRadius: 5,
+
+  },
+  textSwipe: {
+    color: '#fff',
+    fontWeight: 'bold',
+    padding: 42,
   }
 });
 
