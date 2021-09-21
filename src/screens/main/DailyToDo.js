@@ -1,7 +1,11 @@
 
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { Swipeable } from 'react-native-gesture-handler';
+import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet, Animated, Alert, SectionList, SafeAreaView } from 'react-native'
 import { firebase } from '../../firebase/config'
+import { useTheme, useNavigation } from '@react-navigation/native';
+import moment from 'moment';
+
 
 /**
  * This function lets the user enter daily tasks they
@@ -12,7 +16,7 @@ import { firebase } from '../../firebase/config'
  * @returns a screen that lets user ass and delete tasks
  */
 export default function dailytodo(props) {
-    const [clickItemId, setClickItemId] = useState(null)
+    const { colors } = useTheme();
     const [listText, setlistText] = useState('')
     const [listContents, setContents] = useState([])
 
@@ -38,6 +42,8 @@ export default function dailytodo(props) {
                 }
             )
     }, [])
+
+
 
     /**
      * Button adds the task to firbase and displays it 
@@ -71,29 +77,93 @@ export default function dailytodo(props) {
    */
     const renderList = ({ item }) => {
         return (
-            <ClickTask
+            <Task
                 item={item}
-                onPress={() => {
-                    setClickItemId(item.id);
-                    alert('clicked')
-                }}
+
             />
         )
     }
+
     /**
-       * This fucntion make the notes displayed
+     * Delete the note from dashboard and firebase.
+     * 
+     * @param noteId the id of the note
+     */
+    const deleteNote = (noteId) => {
+        entityRef
+            .doc(noteId)
+            .delete()
+            .then(() => {
+                //nothing
+            })
+            .catch((error) => {
+                Alert.alert(error)
+            })
+    }
+
+    /**
+     * Confirm that the user wants to delete the note or not.
+     * 
+     * @param noteId the id of the note being deleted
+     */
+    const confirmDelete = (noteId) => {
+        Alert.alert(
+            "Are your sure?",
+            "Once you complete the task it will delete?",
+            [
+                // The "Yes" button that will delete the task
+                {
+                    text: "Yes",
+                    onPress: () => { deleteNote(noteId) }
+                },
+                // The "No" button
+                // Does nothing but dismiss the dialog when tapped
+                {
+                    text: "No",
+                },
+            ],
+
+        );
+    }
+
+    /**
+   * The settings for when the user wants to swipe to the right.
+   * to delete the note. 
+   * 
+   * @param params - dragX is the setting of the swipe and onpress the action of swipe.
+   * @returns a swipe that shows a button delete.
+   */
+    const LeftActions = ( progress, dragX ) => {
+        const scale = dragX.interpolate({
+            inputRange: [0, 100],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+        })
+        return (
+            <View style={styles.rightSwipe}>
+                <Animated.Text style={[styles.textSwipe, { transform: [{ scale }] }]}>Complete</Animated.Text>
+            </View>
+        )
+    }
+
+    /**
+       * This function make the notes displayed
        * in the flat list clickable.
        * 
        * @param {item, onPress} - the item being selected 
        * and what will occur when it is pressed 
        * @returns a clickable flatlist
        */
-    const ClickTask = ({ item, onPress }) => (
-        <TouchableOpacity
-            onPress={onPress}
-            style={styles.items}>
-            <Text style={styles.entityText}>{item.text}</Text>
-        </TouchableOpacity>
+    const Task = ({ item, onPress }) => (
+        <Swipeable
+            renderLeftActions={LeftActions}
+            onSwipeableLeftOpen={() => confirmDelete(item.id)}
+        >
+            <View
+                style={styles.items}>
+                <Text style={{ color: colors.text, fontSize: 16 }}>{item.text}</Text>
+            </View>
+        </Swipeable>
     );
 
     return (
@@ -112,12 +182,12 @@ export default function dailytodo(props) {
                     <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
             </View>
+
             <View style={styles.tasks}>
                 <FlatList
                     data={listContents}
                     renderItem={renderList}
                     keyExtractor={(item) => item.id}
-                    extraData={clickItemId}
                     removeClippedSubviews={true}
                 />
             </View>
@@ -154,7 +224,7 @@ const styles = StyleSheet.create({
     button: {
         height: 47,
         borderRadius: 5,
-        backgroundColor: '#788eec',
+        backgroundColor: '#9AC4F8',
         width: 80,
         alignItems: "center",
         justifyContent: 'center'
@@ -164,18 +234,33 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     items: {
-        backgroundColor: '#9AC4F8',
-        height: 100,
+        //backgroundColor: '#9AC4F8',
+        height: 65,
         justifyContent: 'center',
         marginVertical: 5,
         marginHorizontal: 16,
         padding: 20,
         borderRadius: 6,
-    },
-    entityText: {
-        fontSize: 19
+        borderColor: '#bfbfbf',
+        borderWidth: 2,
+        width: 320,
+        marginLeft: 50,
     },
     tasks: {
         marginTop: 80
+    },
+    rightSwipe: {
+        backgroundColor: '#33cc33',
+        justifyContent: 'center',
+        flex: 1,
+        top: 5,
+        borderRadius: 5,
+        marginRight: 10,
+    },
+    textSwipe: {
+        color: '#fff',
+        fontWeight: 'bold',
+        padding: 20,
+        fontSize: 20,
     }
 });
