@@ -96,6 +96,7 @@ const SettingsNavigator = (nav) => {
       </Stack.Screen>
       <Stack.Screen name="About" component={About}></Stack.Screen>
       <Stack.Screen name="Update" component={Update}></Stack.Screen>
+      <Stack.Screen name="Login" component={LoginScreen}></Stack.Screen>
     </Stack.Navigator>
   );
 }
