@@ -2,6 +2,14 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Card } from 'react-native-paper';
 
+
+/**
+ * This function represetns the Card component that 
+ * shows text in the settings.js file in the screens 
+ * directory. 
+ * 
+ * @returns card component
+ */
 function AboutCard() {
     return (
         <Card style={styles.text}>
@@ -19,6 +27,9 @@ function AboutCard() {
     )
 }
 
+/**
+ * The styling of the UI component.
+ */
 const styles = StyleSheet.create({
     text: {
         marginTop: 50,
