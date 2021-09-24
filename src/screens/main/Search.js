@@ -4,6 +4,7 @@ import { SearchBar, Icon, ListItem, Text, Divider } from 'react-native-elements'
 import { firebase } from '../../firebase/config'
 import { useTheme } from '@react-navigation/native';
 import Info from '../../components/Headers/info';
+
 /**
  * This screen lets the user search their notes 
  * by entering the title or text of the note.
@@ -74,7 +75,7 @@ export default function Search({ navigation }) {
             return (
               array.length > 0 &&
               <View key={index}>
-                {/* A gray divder to split the notes up */}
+                {/* A divder to split the notes up */}
                 <Divider
                   orientation="horizontal"
                   subHeader={<Text style={{ color: colors.text, fontSize: 22, marginTop: 0, fontWeight:'bold' }}>{"\t"}{index == 0 ? "Matches for Title" : "Matches for Text"}</Text>}

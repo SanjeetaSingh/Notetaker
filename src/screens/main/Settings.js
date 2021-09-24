@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Button, DevSettings, FlatList } from "react-native";
-import { Card, List } from 'react-native-paper';
+import { StyleSheet, Text, View, TouchableOpacity, Button, FlatList } from "react-native";
 import { firebase } from "../../firebase/config";
 import { useTheme, useNavigation } from '@react-navigation/native';
 
@@ -21,10 +20,12 @@ export default function setting(prop) {
   const navigation = useNavigation();
   const { colors } = useTheme();
 
+  //States that stores the data into an array 
   const [entities, setEntities] = useState([])
   const entityRef = firebase.firestore().collection('users')
   const userID = prop.extraData.id
 
+  //To get the user that is logged in the application
   useEffect(() => {
     entityRef
       .where("id", "==", userID)
@@ -44,6 +45,12 @@ export default function setting(prop) {
       )
   }, [])
 
+  /**
+   * Function renders the profile that is logged in.
+   * 
+   * @param item getting the fields from firebase
+   * @returns the name of the person logged in
+   */
   const renderEntity = ({ item }) => {
     return (
       <View style={styles.items}>
@@ -59,6 +66,7 @@ export default function setting(prop) {
     <View style={{ color: colors.text, flex: 1, padding: 8, }}>
       <ProfileHeader/>
       <View style={styles.account}>
+        {/* Renders the account logged in */}
         <FlatList
           data={entities}
           renderItem={renderEntity}
@@ -67,24 +75,29 @@ export default function setting(prop) {
         />
       </View>
 
+      {/* Calling on the UI components to show the account subheader from components directory */}
       <AccountHeaders />
 
       {/**This is sections for the account settings */}
       <TouchableOpacity onPress={() => navigation.navigate('Update')}>
-
+        {/* The account contained buttons from the UI components directory */}
         <AccountCard />
       </TouchableOpacity>
 
-      {/**This is sections for the appearance settings */}
+      {/* Calling on the UI components to show the dark mode subheader from components directory */}
      <ModeHeaders/>
+
       <View>
+        {/* The apperance contained buttons from the UI components directory */}
         <AppearanceCard />
       </View>
 
+      {/* Calling on the UI components to show the more subheader from components directory */}
       <SubHeaders />
+
       {/**This is sections for the more settings */}
       <TouchableOpacity onPress={() => navigation.navigate('About')}>
-
+        {/* The more contained button from the UI components directory */}
         <MoreCard />
       </TouchableOpacity>
 
@@ -102,7 +115,7 @@ export default function setting(prop) {
 }
 
 /**
- * Styling for the settigs screen
+ * Styling for the settings screen
  */
 const styles = StyleSheet.create({
   container: {

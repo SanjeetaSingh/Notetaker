@@ -302,7 +302,8 @@ const styles = StyleSheet.create({
   textSwipe: {
     color: '#fff',
     fontWeight: 'bold',
-    padding: 42,
+    padding: 40,
+    fontSize:20,
   }
 });
 

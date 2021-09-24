@@ -1,24 +1,27 @@
 import React, { useState } from "react";
-import { Alert, ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { Alert, ScrollView, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { firebase } from '../../firebase/config';
 import { Card } from 'react-native-paper';
+import Instructions from "../../components/Headers/instructions";
 
 /**
  * This function lets the user to update the email and
- * password from the settings page. 
+ * password navigated from the settings page. 
  * 
  * @returns a updated password or email or both
  */
-function Update() {
+const Update = function() {
+    //Changed the theme according to what the user wants
     const { colors } = useTheme();
+
+    //States that stores the data 
     const [newPassword, setnewPassword] = useState('')
     const [currentPassword, setCurrentPassword] = useState('')
-
     const [newEmail, setNewEmail] = useState('')
 
     /**
-     * Makes sure the entered current password is the correct.
+     * Functions makes sure the entered current password is the correct.
      * 
      * @param password - the current password 
      * @returns if the password if correct or not
@@ -31,7 +34,7 @@ function Update() {
     }
 
     /**
-     * Changed the current password to the a new password
+     * Function changes the current password to the a new password
      */
     const onChangePasswordPress = () => {
         reauthenticate(currentPassword)
@@ -49,7 +52,7 @@ function Update() {
     }
 
     /**
-     * Changes the current email to a new email. 
+     * Function changes the current email to a new email. 
      */
     const onChangeEmailPress = () => {
         reauthenticate(currentPassword)
@@ -71,6 +74,8 @@ function Update() {
             <Text style={{ color: colors.text, fontSize: 17, marginTop: 80, textAlign: 'center', fontWeight: 'bold' }}>
                 Update your passsword for you profile.
             </Text>
+
+            {/* Feild to enter current password */}
             <Card style={styles.topField}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter Current Password"
@@ -80,6 +85,7 @@ function Update() {
                 />
             </Card>
 
+            {/* Field to enter the new password */}
             <Card style={styles.toggle}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter New Password"
@@ -89,15 +95,14 @@ function Update() {
                     value={newPassword}
                 />
             </Card>
-    
+
             <TouchableOpacity style={styles.passwordButton} onPress={onChangePasswordPress}>
                 <Text style={styles.text}>Change Password</Text>
             </TouchableOpacity>
 
-            <Text style={{ color: colors.text, fontSize: 17, marginTop: 30, textAlign: 'center', fontWeight: 'bold' }}>
-                Update your Email for your profile. {'\n'}
-                Please enter your current password to verfy it is you.
-            </Text>
+            <Instructions/>
+
+            {/* Field to enter the current password */}
             <Card style={styles.toggle}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter Current Password"
@@ -107,6 +112,7 @@ function Update() {
                 />
             </Card>
 
+            {/* Field to enter the new email */}
             <Card style={styles.toggle}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter New Email"
@@ -156,22 +162,22 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
     },
-    text:{
+    text: {
         fontSize: 15,
-        fontWeight:'bold',
-        color:'#fff',
-        
+        fontWeight: 'bold',
+        color: '#fff',
+
     },
-    passwordButton:{
+    passwordButton: {
         backgroundColor: '#9AC4F8',
         marginLeft: 140,
         marginRight: 140,
-        marginTop:15,
+        marginTop: 15,
         height: 48,
         borderRadius: 130,
         alignItems: "center",
         justifyContent: 'center',
-        
+
     }
 });
 

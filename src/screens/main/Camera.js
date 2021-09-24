@@ -11,7 +11,7 @@ const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
 /**
 * Function creates the add photo screen that 
 * uses the camera component to let users to take photos
-* and save them locally. 
+* and save them locally to their gallery. 
 * 
 * @returns the camera user takes a photo with.
 */
@@ -27,17 +27,29 @@ const camera = function () {
     onHandlePermission();
   }, []);
 
-  //Checking if the user has allowed camera access
+  
+  /**
+   * Checking if the user has allowed camera access
+   */
   const onHandlePermission = async () => {
     const { status } = await Camera.requestPermissionsAsync();
     setHasPermission(status === 'granted');
   };
 
-  //Boolean to notify that the camera is ready
+
+  /**
+   * Boolean to notify that the camera is ready
+   */
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
-  //Flips the camera 
+
+  /**
+   * Function is to flip the camera facing
+   * back or facing forward.
+   * 
+   * @returns 
+   */
   const flipCamera = () => {
     if (isPreview) {
       return;
@@ -49,7 +61,11 @@ const camera = function () {
     );
   };
 
-  //Function lets the user take a photo
+  /**
+   * Function lets the user take a photo and 
+   * store the image to the users gallery after 
+   * they are given permisson.
+   */
   const takenPhoto = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.8, base64: true, skipProcessing: true};
@@ -67,7 +83,9 @@ const camera = function () {
     }
   };
 
-  //Lets the user cancel out of the preview
+  /**
+   * Function lets user cancel out of the preview
+   */
   const backPreview = async () => {
     await cameraRef.current.resumePreview();
     setIsPreview(false);
@@ -77,6 +95,7 @@ const camera = function () {
   if (hasPermission === null) {
     return <View />;
   }
+  //The user is shown that they do not have access
   if (hasPermission === false) {
     return <Text style={styles.text}>No access to camera</Text>;
   }
@@ -92,6 +111,7 @@ const camera = function () {
         useCamera2Api={true}
       />
       <View style={styles.container}>
+        {/* If the camera previw is true then show the close button call on the function */}
         {isPreview && (
           <TouchableOpacity
             onPress={backPreview}
@@ -100,6 +120,7 @@ const camera = function () {
             <AntDesign name='close' size={32} color='#fff' />
           </TouchableOpacity>
         )}
+        {/* If the camera preview is false then let the user take a image and call on the functions */}
         {!isPreview && (
           <View style={styles.bottomButtonsContainer}>
             <TouchableOpacity disabled={!isCameraReady} onPress={flipCamera}>

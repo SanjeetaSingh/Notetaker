@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { Swipeable } from 'react-native-gesture-handler';
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet, Animated, Alert, SectionList, SafeAreaView } from 'react-native'
 import { firebase } from '../../firebase/config'
-import { useTheme, useNavigation } from '@react-navigation/native';
-import moment from 'moment';
-
+import { useTheme } from '@react-navigation/native';
 
 /**
  * This function lets the user enter daily tasks they
- * wish to do for the day and can remove them one the
+ * wish to do for the day and can remove them once the
  * tasks are complete. 
  * 
  * @param props get the user in logged in
@@ -23,6 +21,7 @@ export default function dailytodo(props) {
     const entityRef = firebase.firestore().collection('list')
     const userID = props.extraData.id
 
+    //Getting the stored tasks and putting them into an array
     useEffect(() => {
         entityRef
             .where("authorID", "==", userID)
@@ -42,7 +41,6 @@ export default function dailytodo(props) {
                 }
             )
     }, [])
-
 
 
     /**
@@ -69,12 +67,13 @@ export default function dailytodo(props) {
         }
     }
 
+
     /**
-   * This function renders the item to show on the flat list
-   * 
-   * @param item the item stored in firebase
-   * @returns the item
-   */
+      This function renders the item to show on the flat list
+     * 
+     * @param item the item stored in firebase
+     * @returns the item
+     */
     const renderList = ({ item }) => {
         return (
             <Task
@@ -85,7 +84,7 @@ export default function dailytodo(props) {
     }
 
     /**
-     * Delete the note from dashboard and firebase.
+     * Deletes the task from screen and firebase.
      * 
      * @param noteId the id of the note
      */
@@ -102,7 +101,7 @@ export default function dailytodo(props) {
     }
 
     /**
-     * Confirm that the user wants to delete the note or not.
+     * Confirm that the user wants to delete the task or not.
      * 
      * @param noteId the id of the note being deleted
      */
@@ -127,13 +126,13 @@ export default function dailytodo(props) {
     }
 
     /**
-   * The settings for when the user wants to swipe to the right.
-   * to delete the note. 
-   * 
-   * @param params - dragX is the setting of the swipe and onpress the action of swipe.
-   * @returns a swipe that shows a button delete.
-   */
-    const LeftActions = ( progress, dragX ) => {
+    * The settings for when the user wants to swipe to the right.
+    * to delete the task. 
+    *         
+    * @param params - dragX is the setting of the swipe and onpress the action of swipe.
+    * @returns a swipe that shows a button delete.
+    */
+    const LeftActions = (progress, dragX) => {
         const scale = dragX.interpolate({
             inputRange: [0, 100],
             outputRange: [0, 1],
@@ -147,13 +146,13 @@ export default function dailytodo(props) {
     }
 
     /**
-       * This function make the notes displayed
-       * in the flat list clickable.
-       * 
-       * @param {item, onPress} - the item being selected 
-       * and what will occur when it is pressed 
-       * @returns a clickable flatlist
-       */
+    * This function make the tasks displayed
+    * in the flat list clickable.
+    * 
+    * @param {item, onPress} - the item being selected 
+    * and what will occur when it is pressed 
+    * @returns a clickable flatlist
+    */
     const Task = ({ item, onPress }) => (
         <Swipeable
             renderLeftActions={LeftActions}
@@ -169,6 +168,7 @@ export default function dailytodo(props) {
     return (
         <View style={styles.listcontainer}>
             <View style={styles.formContainer}>
+                {/* The text input for the task to be added */}
                 <TextInput
                     style={styles.input}
                     placeholder='Add a task'
@@ -184,6 +184,7 @@ export default function dailytodo(props) {
             </View>
 
             <View style={styles.tasks}>
+                {/* The the flat list that shows the tasks on the screen */}
                 <FlatList
                     data={listContents}
                     renderItem={renderList}
@@ -191,13 +192,12 @@ export default function dailytodo(props) {
                     removeClippedSubviews={true}
                 />
             </View>
-
         </View>
     )
 }
 
 /**
- * Styling for the settigs screen
+ * Styling for the todo screen.
  */
 const styles = StyleSheet.create({
     listContainer: {

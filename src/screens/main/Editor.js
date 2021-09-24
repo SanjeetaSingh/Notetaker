@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 /**
  * Function created the editor screen which lets the
  * user add notes to the application. The editor screen 
- * used Quill.js package to let the user access the toolbar
+ * used pell-rich-editor package to let the user access the toolbar
  * and the text editor. 
  * 
  * @returns The text editor screen.
@@ -22,11 +22,12 @@ export default function addNote(props) {
   const route = useRoute();
 
   const RichText = useRef(); //reference to the RichEditor component
+
+  //The states used to store data and maniplute the data
   const [entityText, setEntityText] = useState(route.params ? route.params.fileText : '');
   const [titleEntry, setTitle] = useState(route.params ? route.params.fileTitle : '')
   const [fileID ] = useState(route.params ? route.params.id : '')
   const [image, setImage] = useState(null);
-
   const [state, setState] = useState({});
 
   //The collection that is created for the notes
@@ -51,7 +52,7 @@ export default function addNote(props) {
   };
 
   /**
-   * Function handles logic to save the text that gets saves to firebase 
+   * Function handles logic to add the text that gets saves to firebase.
    */
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -137,7 +138,6 @@ export default function addNote(props) {
           ref={RichText}
           style={styles.rich}
           placeholder={"start write here..."}
-          // This to avoid html tags being produced when the text gets saved
           onChange={(text) => setEntityText(text)}
           value={entityText}
           initialContentHTML={entityText}
