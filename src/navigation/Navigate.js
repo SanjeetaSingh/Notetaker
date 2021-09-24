@@ -21,18 +21,18 @@ import Update from '../screens/main/Update'
 import DailyToDo from '../screens/main/DailyToDo';
 import Search from '../screens/main/Search';
 
+//constants created for the tab navigation and stack navigation
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
-
 /**
- * This function creates a header for the dashboard screen.
+ * This function creates a stack for the dashboard screen.
  * 
- * @returns The screen header.
+ * @returns The main stack.
  */
 const MainNavigator = (nav) => {
   const navigation = useNavigation();
+  //Confirmation dialog when user exits from the editor screen
   const showConfirmDialog = () => {
     return Alert.alert(
       "Are your sure?",
@@ -71,9 +71,9 @@ const MainNavigator = (nav) => {
 }
 
 /**
- * This function creates a header for the camera screen.
+ * This function creates a stack for the camera screen.
  * 
- * @returns The screen header.
+ * @returns The stack for the camera.
  */
 const PhotoNavigator = ({ navigation }) => {
   return (
@@ -84,9 +84,9 @@ const PhotoNavigator = ({ navigation }) => {
 }
 
 /**
- * This function creates a header for the settings screen.
+ * This function creates a stack for the settings screen.
  * 
- * @returns The screen header.
+ * @returns The stack for the settings.
  */
 const SettingsNavigator = (nav) => {
   return (
@@ -102,9 +102,9 @@ const SettingsNavigator = (nav) => {
 }
 
 /**
- * This function creates a header for the settings screen.
+ * This function creates a stack for the search screen.
  * 
- * @returns The screen header.
+ * @returns The screen for search.
  */
 const SearchNavigator = (nav) => {
   const navigation = useNavigation();
@@ -146,9 +146,9 @@ const SearchNavigator = (nav) => {
 }
 
 /**
- * This function creates a header for daily to do screen.
+ * This function creates a stack for to do screen.
  * 
- * @returns The screen header.
+ * @returns The stack for the to do.
  */
 const ToDoNavigator = (nav) => {
   return (
@@ -163,10 +163,10 @@ const ToDoNavigator = (nav) => {
 /**
  * This function handles the fixed menu on every screen 
  * that routes to the correct screens for the application.
- * This tab navigation works with the Header javascript file
- * that works with stack navigation.  
+ * This tab navigation works with the functions above 
+ * that works with stacks in the stack navigation.  
  * 
- * @returns The fixed menu on the application screens.
+ * @returns the navigation to each screen.
  */
 const Menu = (nav) => {
   return (
@@ -241,9 +241,11 @@ const Menu = (nav) => {
 const LoginRegisterStack = createStackNavigator();
 
 export default () => {
+  //Working with the theme of the applaiction 
   const themeReducers = useSelector(({ themeReducer }) => themeReducer);
   const [users, setUser] = useState(null);
 
+  // Getting the user loggined in and their data
   useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
     firebase.auth().onAuthStateChanged(user => {
@@ -267,11 +269,13 @@ export default () => {
       <PaperProvider theme={themeReducers.theme ? PaperDarkTheme : PaperDefaultTheme}>
         <LoginRegisterStack.Navigator screenOptions={screenOptionStyle}>
           {users ? (
+            // Navigating to the dashboard screen when logged in 
             <LoginRegisterStack.Screen name="Menu" options={{ headerShown: false }}>
               {props => (<Menu{...props} extraData={users} />)}
             </LoginRegisterStack.Screen>
           ) : (
             <>
+              {/* Adding the login and register screen to the stack */}
               <LoginRegisterStack.Screen name="Login" component={LoginScreen} />
               <LoginRegisterStack.Screen name="Registration" component={RegistrationScreen} />
             </>
@@ -283,7 +287,7 @@ export default () => {
 };
 
 /**
- * Screen header styling.
+ * Styling of the componentes in this file.
  */
 const screenOptionStyle = {
   headerStyle: {
