@@ -104,7 +104,7 @@ export default function Search({ navigation }) {
                         {/* Shows the title or text for the search */}
                         <ListItem.Content>
                           <ListItem.Title>{fileInfo.fileTitle}</ListItem.Title>
-                          <ListItem.Subtitle numberOfLines={1}>{fileInfo.fileText.replace(/(<([^>]+)>)/ig, '')}</ListItem.Subtitle>
+                          <ListItem.Subtitle numberOfLines={1}>{fileInfo.fileText ? fileInfo.fileText.replace(/<[^>]+>/g, " ").replace(/&[^;]+;/g, " ").replace(/[ ]+/g, " ").trim().trim() : ""}</ListItem.Subtitle>
                         </ListItem.Content>
                         <Icon name="edit" color="gray" />
                       </ListItem>
