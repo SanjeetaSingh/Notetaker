@@ -104,6 +104,7 @@ export default function Search({ navigation }) {
                         {/* Shows the title or text for the search */}
                         <ListItem.Content>
                           <ListItem.Title>{fileInfo.fileTitle}</ListItem.Title>
+                          {/* Replaces the html tags and toolbar effects as well as white spaces */}
                           <ListItem.Subtitle numberOfLines={1}>{fileInfo.fileText ? fileInfo.fileText.replace(/<[^>]+>/g, " ").replace(/&[^;]+;/g, " ").replace(/[ ]+/g, " ").trim().trim() : ""}</ListItem.Subtitle>
                         </ListItem.Content>
                         <Icon name="edit" color="gray" />
