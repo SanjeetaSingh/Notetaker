@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, StyleSheet, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { firebase } from '../../../back-end/firebase/config'
+import { loginUser } from '../../../back-end/firebase/methods/firebaseMethods';
 import Logos from '../../../components/Logo/logos';
 
 /**
@@ -21,33 +21,16 @@ export default function LoginScreen({ navigation }) {
         navigation.navigate('Registration')
     }
 
-    //When the user presses the login button users credentials is authenticated 
-    const onLoginPress = () => {
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((response) => {
-                const uid = response.user.uid
-                const usersRef = firebase.firestore().collection('users')
-                usersRef
-                    .doc(uid)
-                    .get()
-                    .then(firestoreDocument => {
-                        if (!firestoreDocument.exists) {
-                            alert("User does not exist anymore.")
-                            return;
-                        }
-                        const user = firestoreDocument.data()
-                        navigation.replace('Screens', { user })
-                    })
-                    .catch(error => {
-                        alert(error)
-                    });
-            })
-            .catch(error => {
-                alert(error)
-            })
-    }
+    async function loginValidation() {
+        const result = await loginUser(email, password);
+        if (!result) {
+          Alert("Error logging in with your credentials")
+        } else {
+          Alert("You have successfully logged in!")
+          const user = firestoreDocument.data()
+          navigation.replace('Screens', { user })
+        }
+      }
 
     //The view of the login screen
     return (
@@ -80,7 +63,7 @@ export default function LoginScreen({ navigation }) {
                 <TouchableOpacity
                     //Login button pressed method to check the credentials with firebase is called
                     style={styles.button}
-                    onPress={() => onLoginPress()}>
+                    onPress={() => loginValidation()}>
                     <Text style={styles.buttonTitle}>Log in</Text>
                 </TouchableOpacity>
                 <View style={styles.footerView}>

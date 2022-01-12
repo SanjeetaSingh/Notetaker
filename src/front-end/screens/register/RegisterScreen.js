@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View, StyleSheet} from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, StyleSheet, Alert} from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { firebase } from '../../../back-end/firebase/config'
 import Logos from '../../../components/Logo/logos';
+import { registerUser } from '../../../back-end/firebase/methods/firebaseMethods';
 
 /**
  * This function is to create the register screen
@@ -24,37 +24,55 @@ export default function RegistrationScreen({navigation}) {
         navigation.replace('Login')
     }
 
-    //When the user presses the register button users credentials is added to firebase
-    const onRegisterPress = () => {
-        if (password !== confirmPassword) {
-            alert("Passwords don't match.")
-            return
+    async function onRegisterPress () {
+
+        if (confirmPassword !== password) {
+            Alert("Passwords do not match!");
         }
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((response) => {
-                const uid = response.user.uid
-                const data = {
-                    id: uid,
-                    email,
-                    fullName,
-                };
-                const usersRef = firebase.firestore().collection('users')
-                usersRef
-                    .doc(uid)
-                    .set(data)
-                    .then(() => {
-                        navigation.replace('Screens', {user: data})
-                    })
-                    .catch((error) => {
-                        alert(error)
-                    });
-            })
-            .catch((error) => {
-                alert(error)
-        });
+
+
+        const res = await registerUser(fullName, email, password);
+        if (!res) {
+            Alert("Error registering with your credentials.");
+        } else {
+            const user = firestoreDocument.data()
+            navigation.replace('Screens', {user})
+            Alert("You have successfully registered!");
+
+
+        }
     }
+    //When the user presses the register button users credentials is added to firebase
+    // const onRegisterPress = () => {
+    //     if (password !== confirmPassword) {
+    //         alert("Passwords don't match.")
+    //         return
+    //     }
+    //     firebase
+    //         .auth()
+    //         .createUserWithEmailAndPassword(email, password)
+    //         .then((response) => {
+    //             const uid = response.user.uid
+    //             const data = {
+    //                 id: uid,
+    //                 email,
+    //                 fullName,
+    //             };
+    //             const usersRef = firebase.firestore().collection('users')
+    //             usersRef
+    //                 .doc(uid)
+    //                 .set(data)
+    //                 .then(() => {
+    //                     navigation.replace('Screens', {user: data})
+    //                 })
+    //                 .catch((error) => {
+    //                     alert(error)
+    //                 });
+    //         })
+    //         .catch((error) => {
+    //             alert(error)
+    //     });
+    // }
 
     //The view of the registration screen
     return (
