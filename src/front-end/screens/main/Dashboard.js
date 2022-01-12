@@ -1,10 +1,10 @@
 import { Swipeable } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Alert } from 'react-native';
-import { firebase } from '../../firebase/config'
+import { firebase } from '../../../back-end/firebase/config'
 import { IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import NoteTitle from '../../components/Headers/Title';
+import NoteTitle from '../../../components/Headers/Title'
 
 /**
  * This function created the home screen of the application.
