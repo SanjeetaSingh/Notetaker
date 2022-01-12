@@ -1,5 +1,18 @@
 import 'react-native-gesture-handler';
 import React from 'react'
+import {decode, encode} from 'base-64'
+
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
+
+import Menu from './src/navigation/Navigate'
+import reducers from './src/theme/redux/reducers/index.reducers';
+var middlewares = applyMiddleware(thunk);
+const store = createStore(reducers, middlewares);
+
+if (!global.btoa) {  global.btoa = encode }
+if (!global.atob) { global.atob = decode }
 
 /**
  * This function calls on the functions
@@ -10,7 +23,9 @@ import React from 'react'
  */
 export default function App() { 
   return (
-   //
+    <Provider store={store}>
+      <Menu/>
+    </Provider>
   );
 }
 
