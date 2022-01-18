@@ -12,7 +12,7 @@ const NoteTitle = () => {
     //The colour of the font according to the theme
     const { colors } = useTheme();
     return (
-        <Text style={{ color: colors.text, fontSize: 40, marginTop: 20, marginHorizontal: 16, marginBottom: 5, fontWeight: 'bold' }}>
+        <Text style={{ color: colors.text, fontSize: 40, marginTop: 20, marginHorizontal: 25, marginBottom: 5, fontWeight: 'bold' }}>
             Notes
         </Text>
     )
