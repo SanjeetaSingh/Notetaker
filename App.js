@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react'
-import {decode, encode} from 'base-64'
+import { decode, encode } from 'base-64'
 
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
@@ -11,7 +11,7 @@ import reducers from './src/theme/redux/reducers/index.reducers';
 var middlewares = applyMiddleware(thunk);
 const store = createStore(reducers, middlewares);
 
-if (!global.btoa) {  global.btoa = encode }
+if (!global.btoa) { global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
 /**
@@ -21,10 +21,10 @@ if (!global.atob) { global.atob = decode }
  * 
  * @returns The UI of the application.
  */
-export default function App() { 
+export default function App() {
   return (
     <Provider store={store}>
-      <Menu/>
+        <Menu/>
     </Provider>
   );
 }
