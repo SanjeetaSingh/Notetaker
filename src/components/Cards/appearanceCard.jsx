@@ -34,10 +34,10 @@ function AppearanceCard() {
  */
 const styles = StyleSheet.create({
     toggle: {
-        backgroundColor: '#9AC4F8',
+        backgroundColor: '#91C0D4',
         borderRadius: 5,
         marginTop: 10,
-        marginHorizontal: 10,
+        marginHorizontal: 20,
         fontWeight: 'bold',
     },
 
