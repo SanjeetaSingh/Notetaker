@@ -5,7 +5,7 @@ import { Provider as PaperProvider, DefaultTheme as PaperDefaultTheme, DarkTheme
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from "@react-navigation/stack";
-import { Alert } from 'react-native';
+import { Alert, View, Text } from 'react-native';
 import { useSelector } from "react-redux";
 import firebase from 'firebase'
 
@@ -109,15 +109,26 @@ const SettingsNavigator = (nav) => {
  */
 const Menu = (nav) => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#91C0D4',
+          labelStyle: {
+            fontSize: 20,
+          },
+          
+        }
+      }}
+    >
       {/* The Dashboard tab navigation */}
       <Tab.Screen name='Dash' options={{
         tabBarLabel: 'Dashboard',
         tabBarIcon: ({ color }) => (
-          <Ionicons name="ios-home" color={color} size={26} />
+          <Ionicons name="ios-home" color={color} size={30} />
         ),
-        tabBarActiveTintColor: '#9AC4F8',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: 'gray',
+        tabBarInactiveTintColor: '#fff',
       }}>
         {props => (<MainNavigator {...props} extraData={nav.extraData} />)}
       </Tab.Screen>
@@ -127,12 +138,26 @@ const Menu = (nav) => {
         name="Photo"
         component={PhotoNavigator}
         options={{
-          tabBarLabel: 'Camera',
+          tabBarLabel: "Camera",
+
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-camera" color={color} size={26} />
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 0, // space from bottombar
+                height: 75,
+                width: 78,
+                borderRadius: 75,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#91C0D4',
+              }}
+            >
+              <Ionicons name="ios-camera" color={color} size={35} />
+            </View>
           ),
-          tabBarActiveTintColor: '#9AC4F8',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: 'gray',
+          tabBarInactiveTintColor: '#fff',
         }}
       />
       {/* The Settings tab navigation */}
@@ -140,14 +165,14 @@ const Menu = (nav) => {
         name="setting" options={{
           tabBarLabel: 'Setting',
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-settings" color={color} size={26} />
+            <Ionicons name="ios-settings" color={color} size={30} />
           ),
-          tabBarActiveTintColor: '#9AC4F8',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: 'gray',
+          tabBarInactiveTintColor: '#fff',
         }}>
         {props => (<SettingsNavigator {...props} extraData={nav.extraData} />)}
       </Tab.Screen>
-    </Tab.Navigator>
+    </Tab.Navigator >
   );
 }
 
@@ -204,7 +229,7 @@ export default () => {
  */
 const screenOptionStyle = {
   headerStyle: {
-    backgroundColor: "#9AC4F8",
+    backgroundColor: "#91C0D4",
   },
   headerTitleStyle: {
     fontWeight: 'bold',
