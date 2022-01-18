@@ -259,21 +259,27 @@ export default function addNote(props) {
 /**
  * Styling for the dashboard screen
  */
-const styles = StyleSheet.create({
+ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
   },
   items: {
-    backgroundColor: '#9AC4F8',
-    height: 100,
+    backgroundColor: '#91C0D4',
+    height: 70,
     justifyContent: 'center',
-    marginVertical: 5,
+    marginVertical: 1,
     marginHorizontal: 16,
     padding: 20,
-    borderRadius: 6
+    borderRadius: 4,
+    width: 350,
+    marginLeft: 30,
+  },
+  contain: {
+    
   },
   top: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginVertical: 5,
   },
   asc: {
     marginTop: 10,
@@ -303,10 +309,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     padding: 40,
-    fontSize:20,
+    fontSize: 20,
   }
 });
-
-
-
-
