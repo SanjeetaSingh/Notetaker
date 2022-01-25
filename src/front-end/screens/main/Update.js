@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Alert, ScrollView, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { firebase } from '../../../back-end/firebase/config';
 import { Card } from 'react-native-paper';
+
+// imports from internal files
+import { firebase } from '../../../back-end/firebase/config';
 import Instructions from "../../../components/Headers/instructions";
+import updateStyle from '../../../style/main-screens/update'
 
 /**
  * This function lets the user to update the email and
@@ -71,12 +74,12 @@ const Update = function() {
 
     return (
         <ScrollView>
-            <Text style={{ color: colors.text, fontSize: 17, marginTop: 80, textAlign: 'center', fontWeight: 'bold' }}>
+            <Text style={{ color: colors.text, fontSize: 17, marginTop: 80, marginLeft: 20, fontWeight: 'bold' }}>
                 Update your passsword for you profile.
             </Text>
 
             {/* Feild to enter current password */}
-            <Card style={styles.topField}>
+            <Card style={updateStyle.topField}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter Current Password"
                     placeholderTextColor="#aaaaaa"
@@ -86,7 +89,7 @@ const Update = function() {
             </Card>
 
             {/* Field to enter the new password */}
-            <Card style={styles.toggle}>
+            <Card style={updateStyle.toggle}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter New Password"
                     placeholderTextColor="#aaaaaa"
@@ -96,14 +99,14 @@ const Update = function() {
                 />
             </Card>
 
-            <TouchableOpacity style={styles.passwordButton} onPress={onChangePasswordPress}>
-                <Text style={styles.text}>Change Password</Text>
+            <TouchableOpacity style={updateStyle.passwordButton} onPress={onChangePasswordPress}>
+                <Text style={updateStyle.text}>Change Password</Text>
             </TouchableOpacity>
 
             <Instructions/>
 
             {/* Field to enter the current password */}
-            <Card style={styles.toggle}>
+            <Card style={updateStyle.toggle}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter Current Password"
                     placeholderTextColor="#aaaaaa"
@@ -113,7 +116,7 @@ const Update = function() {
             </Card>
 
             {/* Field to enter the new email */}
-            <Card style={styles.toggle}>
+            <Card style={updateStyle.toggle}>
                 <TextInput style={{ color: colors.text }}
                     placeholder="Enter New Email"
                     placeholderTextColor="#aaaaaa"
@@ -123,63 +126,13 @@ const Update = function() {
                 />
             </Card>
 
-            <TouchableOpacity style={styles.button} onPress={onChangeEmailPress}>
-                <Text style={styles.text}>Change Email</Text>
+            <TouchableOpacity style={updateStyle.button} onPress={onChangeEmailPress}>
+                <Text style={updateStyle.text}>Change Email</Text>
             </TouchableOpacity>
         </ScrollView>
 
 
     );
 }
-
-/**
- * Styling for the settigs screen
- */
-const styles = StyleSheet.create({
-    toggle: {
-        marginTop: 10,
-        backgroundColor: '#fff',
-        borderRadius: 5,
-        fontWeight: 'bold',
-        padding: 19,
-        marginHorizontal: 20,
-    },
-    topField: {
-        marginTop: 15,
-        backgroundColor: '#fff',
-        borderRadius: 5,
-        marginHorizontal: 20,
-        fontWeight: 'bold',
-        padding: 19
-    },
-    button: {
-        backgroundColor: '#9AC4F8',
-        marginLeft: 140,
-        marginRight: 140,
-        marginTop: 10,
-        height: 48,
-        borderRadius: 130,
-        alignItems: "center",
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: '#fff',
-
-    },
-    passwordButton: {
-        backgroundColor: '#9AC4F8',
-        marginLeft: 140,
-        marginRight: 140,
-        marginTop: 15,
-        height: 48,
-        borderRadius: 130,
-        alignItems: "center",
-        justifyContent: 'center',
-
-    }
-});
-
 
 export default Update;

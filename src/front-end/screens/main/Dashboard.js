@@ -1,10 +1,13 @@
 import { Swipeable } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Animated, Alert } from 'react-native';
 import { firebase } from '../../../back-end/firebase/config'
 import { IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+
+// imports from internal files
 import NoteTitle from '../../../components/Headers/Title'
+import dashboardStyle from '../../../style/main-screens/dashboard'
 
 /**
  * This function created the home screen of the application.
@@ -166,8 +169,8 @@ export default function addNote(props) {
     })
     return (
       <TouchableOpacity onPress={onPress}>
-        <View style={styles.rightSwipe}>
-          <Animated.Text style={[styles.textSwipe, { transform: [{ scale }] }]}>Delete</Animated.Text>
+        <View style={dashboardStyle.rightSwipe}>
+          <Animated.Text style={[dashboardStyle.textSwipe, { transform: [{ scale }] }]}>Delete Note</Animated.Text>
         </View>
       </TouchableOpacity>
 
@@ -187,33 +190,24 @@ export default function addNote(props) {
       renderRightActions={(progress, dragX) => <RightActions dragX={dragX} onPress={() => confirmDelete(item.id)} />}
     >
       <View
-        style={styles.items}>
-        <Text style={styles.entityText}>{item.title}</Text>
+        style={dashboardStyle.items}>
+        <Text style={dashboardStyle.entityText}>{item.title}</Text>
       </View>
     </Swipeable>
 
   );
 
   return (
-    <View style={styles.listContainer}>
-      <View style={styles.top}>
+    <View style={dashboardStyle.listContainer}>
+      <View style={dashboardStyle.top}>
         <NoteTitle />
-        {/* An add button that takes user to the editor page */}
-        <View style={styles.add}>
-          <IconButton style={styles.asc}
-            icon="plus-circle-outline"
-            color={'#9AC4F8'}
-            size={37}
-            onPress={() => navigation.navigate('Editor')}
-          />
-        </View>
-
+        
         {/* If the icon button is clicked the notes will sort oldest to latest */}
         {ordered && (
-          <View style={styles.top}>
-            <IconButton style={styles.asc}
+          <View style={dashboardStyle.top}>
+            <IconButton style={dashboardStyle.asc}
               icon="sort-ascending"
-              color={'#9AC4F8'}
+              color={'#91C0D4'}
               size={37}
               onPress={unOrder}
             />
@@ -222,16 +216,24 @@ export default function addNote(props) {
 
         {/* If the icon button is clicked the notes will sort latest to oldest */}
         {!ordered && (
-          <View style={styles.top}>
-            <IconButton style={styles.desc}
+          <View style={dashboardStyle.top}>
+            <IconButton style={dashboardStyle.desc}
               icon="sort-descending"
-              color={'#9AC4F8'}
+              color={'#91C0D4'}
               size={37}
               onPress={order}
             />
           </View>
 
         )}
+        <View style={dashboardStyle.search}>
+          <IconButton
+            icon="magnify"
+            color={'#91C0D4'}
+            size={37}
+            onPress={() => navigation.navigate('Search')}
+          />
+        </View>
       </View>
 
       {/* According to what boolean is true the flatlist will show that order */}
@@ -252,63 +254,16 @@ export default function addNote(props) {
           removeClippedSubviews={true}
         />
       )}
+      {/* An add button that takes user to the editor page */}
+      <View style={dashboardStyle.add}>
+          <IconButton style={dashboardStyle.asc}
+            icon="plus-circle"
+            color={'#91C0D4'}
+            size={55}
+            onPress={() => navigation.navigate('Editor')}
+          />
+        </View>
+
     </View>
   );
 }
-
-/**
- * Styling for the dashboard screen
- */
- const styles = StyleSheet.create({
-  listContainer: {
-    flex: 1,
-  },
-  items: {
-    backgroundColor: '#91C0D4',
-    height: 70,
-    justifyContent: 'center',
-    marginVertical: 1,
-    marginHorizontal: 16,
-    padding: 20,
-    borderRadius: 4,
-    width: 350,
-    marginLeft: 30,
-  },
-  contain: {
-    
-  },
-  top: {
-    flexDirection: 'row',
-    marginVertical: 5,
-  },
-  asc: {
-    marginTop: 10,
-    left: 90,
-  },
-  desc: {
-    marginTop: 10,
-    left: 90,
-  },
-  entityText: {
-    fontWeight: 'bold',
-    fontSize: 19
-  },
-  add: {
-    flexDirection: 'row',
-    left: 120
-  },
-  rightSwipe: {
-    backgroundColor: '#ff0000',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    top: 5,
-    borderRadius: 5,
-
-  },
-  textSwipe: {
-    color: '#fff',
-    fontWeight: 'bold',
-    padding: 40,
-    fontSize: 20,
-  }
-});

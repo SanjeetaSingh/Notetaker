@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 
-//Constants for the dimensions fo the camera screen
-const WINDOW_HEIGHT = Dimensions.get('window').height;
-const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
+// imports from internal files
+import cameraStyle from '../../../style/main-screens/camera'
 
 /**
 * Function creates the add photo screen that 
@@ -27,7 +26,7 @@ const camera = function () {
     onHandlePermission();
   }, []);
 
-  
+
   /**
    * Checking if the user has allowed camera access
    */
@@ -68,7 +67,7 @@ const camera = function () {
    */
   const takenPhoto = async () => {
     if (cameraRef.current) {
-      const options = { quality: 0.8, base64: true, skipProcessing: true};
+      const options = { quality: 0.8, base64: true, skipProcessing: true };
       const data = await cameraRef.current.takePictureAsync(options);
       const asset = await MediaLibrary.createAssetAsync(data.uri);
 
@@ -79,7 +78,7 @@ const camera = function () {
         setIsPreview(true);
         setIsCameraReady(true);
         alert("Your image you have taken is saved to your gallery!")
-      } 
+      }
     }
   };
 
@@ -97,89 +96,46 @@ const camera = function () {
   }
   //The user is shown that they do not have access
   if (hasPermission === false) {
-    return <Text style={styles.text}>No access to camera</Text>;
+    return <Text style={cameraStyle.text}>No access to camera</Text>;
   }
 
   //Shows the camera fucntionalities and calls on the functions above
   return (
-    <View style={styles.container}>
+    <View style={cameraStyle.container}>
       <Camera
         ref={cameraRef}
-        style={styles.container}
+        style={cameraStyle.container}
         type={cameraType}
         onCameraReady={onCameraReady}
         useCamera2Api={true}
+
       />
-      <View style={styles.container}>
+
+      <View style={cameraStyle.container}>
         {/* If the camera previw is true then show the close button call on the function */}
         {isPreview && (
           <TouchableOpacity
             onPress={backPreview}
-            style={styles.closeButton}
+            style={cameraStyle.closeButton}
             activeOpacity={0.7}>
-            <AntDesign name='close' size={32} color='#fff' />
+            <Ionicons name="close-circle-sharp" size={50} color="red" />
           </TouchableOpacity>
         )}
         {/* If the camera preview is false then let the user take a image and call on the functions */}
         {!isPreview && (
-          <View style={styles.bottomButtonsContainer}>
-            <TouchableOpacity disabled={!isCameraReady} onPress={flipCamera}>
-              <MaterialIcons name='flip-camera-ios' size={28} color='white' />
+          <View style={cameraStyle.bottomButtonsContainer}>
+            <TouchableOpacity disabled={!isCameraReady} onPress={flipCamera} style={cameraStyle.flip}>
+              <MaterialIcons name='flip-camera-ios' size={30} color='white' />
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              disabled={!isCameraReady}
-              onPress={takenPhoto}
-              style={styles.capture}
-            />
+            <TouchableOpacity activeOpacity={0.7} disabled={!isCameraReady} onPress={takenPhoto} style={cameraStyle.capture} >
+              <Ionicons name="ios-radio-button-on-outline" size={90} color="white" />
+            </TouchableOpacity>
+
           </View>
         )}
       </View>
     </View>
   );
 }
-
-/**
- * Styling for the camera screen.
- */
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFill,
-    marginHorizontal: 8,
-    marginBottom: 8,
-    marginTop: 8,
-  },
-  text: {
-    color: '#fff'
-  },
-  bottomButtonsContainer: {
-    position: 'absolute',
-    flexDirection: 'row',
-    bottom: 28,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 35,
-    right: 20,
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9AC4F8',
-    opacity: 0.7
-  },
-  capture: {
-    backgroundColor: 'white',
-    height: CAPTURE_SIZE,
-    width: CAPTURE_SIZE,
-    borderRadius: Math.floor(CAPTURE_SIZE / 2),
-    marginBottom: 28,
-    marginHorizontal: 30,
-  },
-});
 
 export default camera;

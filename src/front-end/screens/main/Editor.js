@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useRef, useState } from "react";
-import { StyleSheet, Text, View, TextInput, Image } from "react-native";
+import { Text, View, TextInput, Image } from "react-native";
 import { firebase } from '../../../back-end/firebase/config'
 import { actions, RichEditor, RichToolbar, } from "react-native-pell-rich-editor";
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -8,6 +8,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+// imports from internal file
+import editorStyle from '../../../style/main-screens/editor'
 
 /**
  * Function created the editor screen which lets the
@@ -80,11 +83,11 @@ export default function addNote(props) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={editorStyle.container}>
       {/* Functionalities for the text editor */}
       <RichToolbar
         //The tool bar attributes for the editor
-        style={[styles.richBar]}
+        style={[editorStyle.richBar]}
         editor={RichText}
         disabled={false}
         iconTint={"#000"}
@@ -108,19 +111,19 @@ export default function addNote(props) {
         // Creating icons for actions on toolbar
         iconMap={{
           [actions.heading1]: ({ tintColor }) => (
-            <Text style={[styles.tib, { color: tintColor }]}>H1</Text>
+            <Text style={[editorStyle.tib, { color: tintColor }]}>H1</Text>
           ),
           [actions.heading2]: ({ tintColor }) => (
-            <Text style={[styles.tib, { color: tintColor }]}>H2</Text>
+            <Text style={[editorStyle.tib, { color: tintColor }]}>H2</Text>
           ),
         }}
       />
 
       {/* Makes sure that the keyboard moves with the amount of text getting put in the note */}
-      <KeyboardAwareScrollView style={styles.container}>
+      <KeyboardAwareScrollView style={editorStyle.container}>
         {/* Creates the text input for the notes title */}
         <TextInput
-          style={styles.title}
+          style={editorStyle.title}
           placeholder='Title'
           placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setTitle(text)}
@@ -129,14 +132,14 @@ export default function addNote(props) {
         />
 
         {/* Inserts the image to the screen under the title */}
-        {image && <Image source={{ uri: image }} style={styles.imageCon} />}
+        {image && <Image source={{ uri: image }} style={editorStyle.imageCon} />}
 
         <RichEditor
           //Functionalities for the text editor
           scrollEnabled={false}
-          containerStyle={styles.editor}
+          containerStyle={editorStyle.editor}
           ref={RichText}
-          style={styles.rich}
+          style={editorStyle.rich}
           placeholder={"start write here..."}
           onChange={(text) => setEntityText(text)}
           value={entityText}
@@ -146,71 +149,13 @@ export default function addNote(props) {
 
       {/* Button that saves the note to firebase */}
       <Button
-        style={styles.buttonSize}
+        style={editorStyle.buttonSize}
         onPress={onAddButtonPress}
         mode="contained">
         <Icon name="save" size={24} color="#fff" />
         <View style={{ width: 5, height: 1 }} />
-        <Text style={styles.buttonTextStyle}>Save Note</Text>
+        <Text style={editorStyle.buttonTextStyle}>Save Note</Text>
       </Button>
     </View>
   );
 }
-
-/**
- * Styling for the editor screen
- */
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  editor: {
-    backgroundColor: "white",
-    borderColor: "black",
-  },
-  rich: {
-    marginTop: 5,
-    minHeight: 500,
-    flex: 1,
-    marginHorizontal: 30,
-    marginVertical: 5,
-    fontSize: 1,
-  },
-  richBar: {
-    height: 50,
-  },
-  tib: {
-    textAlign: "center",
-    color: "#515156",
-  },
-  title: {
-    flexDirection: 'row',
-    height: 60,
-    borderRadius: 5,
-    backgroundColor: 'white',
-    paddingLeft: 30,
-    marginVertical: 5,
-    marginHorizontal: 30,
-    fontSize: 25,
-    marginTop: 10,
-    fontWeight: 'bold',
-  },
-  imageCon: {
-    height: 160,
-    width: 160,
-    marginLeft: 110,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  buttonTextStyle: {
-    fontFamily: "Al Nile",
-    color: '#fff'
-  },
-  buttonSize: {
-    width: 170,
-    marginBottom: 30,
-    left: 210,
-    backgroundColor: '#9AC4F8'
-  }
-});

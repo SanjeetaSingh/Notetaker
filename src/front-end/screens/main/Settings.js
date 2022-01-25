@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Button, FlatList } from "react-native";
+import { Text, View, TouchableOpacity, Button, FlatList } from "react-native";
 import { firebase } from '../../../back-end/firebase/config';
 import { useTheme, useNavigation } from '@react-navigation/native';
 
+// imports from internal files
 import AccountCard from "../../../components/Cards/accountCard";
 import AppearanceCard from "../../../components/Cards/appearanceCard";
 import MoreCard from "../../../components/Cards/moreCard";
-
 import {AccountHeaders, SubHeaders, ModeHeaders, ProfileHeader } from "../../../components/Headers/subHeaders";
-
+import settingsStyle from '../../../style/main-screens/settings'
 /**
  * Function creates the settings page for the application
  * to let the user make changes to the application if 
@@ -53,9 +53,9 @@ export default function setting(prop) {
    */
   const renderEntity = ({ item }) => {
     return (
-      <View style={styles.items}>
+      <View style={settingsStyle.items}>
         <Text style={{ color: colors.text, fontSize: 19, textAlign: 'center' }}>
-          <Text style={styles.starters}>Name: </Text>
+          <Text style={settingsStyle.starters}>Name: </Text>
           {item.fullName}
         </Text>
       </View>
@@ -65,7 +65,7 @@ export default function setting(prop) {
   return (
     <View style={{ color: colors.text, flex: 1, padding: 8, }}>
       <ProfileHeader/>
-      <View style={styles.account}>
+      <View style={settingsStyle.account}>
         {/* Renders the account logged in */}
         <FlatList
           data={entities}
@@ -102,7 +102,7 @@ export default function setting(prop) {
       </TouchableOpacity>
 
       {/**This is to logout of the application */}
-      <TouchableOpacity style={styles.button} >
+      <TouchableOpacity style={settingsStyle.button} >
         <Button
           title="Logout"
           onPress={() => firebase.auth()
@@ -113,56 +113,3 @@ export default function setting(prop) {
     </View>
   );
 }
-
-/**
- * Styling for the settings screen
- */
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 8,
-  },
-  list: {
-    backgroundColor: '#9AC4F8',
-    borderRadius: 5,
-    marginTop: 10,
-    marginHorizontal: 10,
-  },
-  header: {
-    fontSize: 22,
-    marginTop: 20,
-    color: '#000'
-  },
-  selection: {
-    fontSize: 20,
-    color: '#000'
-  },
-  button: {
-    backgroundColor: '#9AC4F8',
-    marginLeft: 150,
-    marginRight: 150,
-    marginTop: 80,
-    height: 48,
-    borderRadius: 130,
-    alignItems: "center",
-    justifyContent: 'center',
-    fontSize: 15,
-  },
-  toggle: {
-    backgroundColor: '#9AC4F8',
-    borderRadius: 5,
-    marginTop: 10,
-    marginHorizontal: 10,
-    fontWeight: 'bold',
-
-  },
-  account: {
-    borderRadius: 5,
-    marginTop: 5,
-    marginHorizontal: 10,
-  },
-  starters: {
-    fontWeight: 'bold'
-  },
-
-});
