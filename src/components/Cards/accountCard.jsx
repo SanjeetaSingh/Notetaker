@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { Card, List } from 'react-native-paper';
+
+// imports from internal files.
+import accStyle from '../../style/components/cards/account'
 
 /**
  * The function represents a Card component for
@@ -11,7 +13,7 @@ import { Card, List } from 'react-native-paper';
  */
 function AccountCard() {
     return (
-        <Card style={styles.text}>
+        <Card style={accStyle.text}>
             {/* This list item shows text on the center of the card and an icon on the left */}
             <List.Item
                 title="Edit Profile"
@@ -20,19 +22,5 @@ function AccountCard() {
         </Card>
     )
 }
-
-/**
- * Styling for the UI component.
- */
-const styles = StyleSheet.create({
-    text: {
-        backgroundColor: '#91C0D4',
-        borderRadius: 5,
-        marginTop: 10,
-        marginHorizontal: 20,
-        fontWeight: 'bold',
-       
-    },
-})
 
 export default AccountCard;

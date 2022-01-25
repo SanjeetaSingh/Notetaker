@@ -13,7 +13,7 @@ const Instructions = () => {
     //This is to change the font color according to theme
     const { colors } = useTheme();
     return (
-        <Text style={{ color: colors.text, fontSize: 17, marginTop: 30, textAlign: 'center', fontWeight: 'bold' }}>
+        <Text style={{ color: colors.text, fontSize: 17, marginTop: 30, marginLeft: 20, fontWeight: 'bold' }}>
             Update your Email for your profile. {'\n'}
             Please enter your current password to verfy it is you.
         </Text>

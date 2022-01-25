@@ -1,5 +1,8 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { Image } from 'react-native';
+
+// imports from internal files
+import logoStyle from '../../style/components/logo/logo'
 
 /**
  * Function represents the image that is 
@@ -10,24 +13,11 @@ import { StyleSheet, Image } from 'react-native';
 function Logos() {
     return (
         <Image
-            style={styles.logo}
+            style={logoStyle.logo}
             //The image from the assets folder
             source={require('../../assets/logos.png')}
         />
     )
 }
-
-/**
- * The styling for the UI component
- */
-const styles = StyleSheet.create({
-    logo: {
-        flex: 1,
-        height: 120,
-        width: 250,
-        alignSelf: "center",
-        margin: 30
-    },
-})
 
 export default Logos;

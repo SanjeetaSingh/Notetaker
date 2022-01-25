@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
+
+// imports from internal files
+import subStyle from '../../style/components/header/subheader'
 
 /**
  * This function is creating a header for a 
@@ -11,7 +13,7 @@ import { List } from 'react-native-paper';
  */
 const ProfileHeader = () => {
     return (
-        <List.Subheader style={styles.profile}>Profile</List.Subheader>
+        <List.Subheader style={subStyle.profile}>Profile</List.Subheader>
     )
 }
 
@@ -24,7 +26,7 @@ const ProfileHeader = () => {
  */
 const AccountHeaders = () => {
     return (
-        <List.Subheader style={styles.content}>Account</List.Subheader>
+        <List.Subheader style={subStyle.content}>Account</List.Subheader>
     )
 }
 
@@ -37,7 +39,7 @@ const AccountHeaders = () => {
  */
 const ModeHeaders = () => {
     return (
-        <List.Subheader style={styles.content}>Appearence</List.Subheader>
+        <List.Subheader style={subStyle.content}>Appearence</List.Subheader>
     )
 }
 
@@ -50,26 +52,8 @@ const ModeHeaders = () => {
  */
 const SubHeaders = () => {
     return (
-        <List.Subheader style={styles.content}>More</List.Subheader>
+        <List.Subheader style={subStyle.content}>More</List.Subheader>
     )
 }
-
-/**
- * Styling for the UI components
- */
-const styles = StyleSheet.create({
-    content: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginTop: 20,
-    },
-    
-  profile: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 20,
-    textAlign: 'center'
-  }
-})
 
 export { SubHeaders, AccountHeaders, ModeHeaders, ProfileHeader };

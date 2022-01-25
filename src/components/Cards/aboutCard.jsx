@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 import { Card } from 'react-native-paper';
 
+// imports from internal files.
+import aboutStyle from '../../style/components/cards/about'
 
 /**
  * This function represetns the Card component that 
@@ -12,8 +14,8 @@ import { Card } from 'react-native-paper';
  */
 function AboutCard() {
     return (
-        <Card style={styles.text}>
-            <Text style={styles.content}>
+        <Card style={aboutStyle.text}>
+            <Text style={aboutStyle.content}>
                 Hi! Just a litle about this application... This application is made for users
                 that are always on the go and need something handy to jot down there thoughts or
                 important infomation. There is a few features to this Note Taking application such as
@@ -26,26 +28,5 @@ function AboutCard() {
         </Card>
     )
 }
-
-/**
- * The styling of the UI component.
- */
-const styles = StyleSheet.create({
-    text: {
-        marginTop: 50,
-        backgroundColor: '#fff',
-        marginHorizontal: 20,
-        fontWeight: 'bold',
-        padding: 19,
-        textAlign: 'center',
-        borderRadius: 15,
-        height: 600,
-    },
-    content: {
-        fontSize: 20,
-        textAlign: 'center',
-        marginTop: 100,
-    }
-})
 
 export default AboutCard;
