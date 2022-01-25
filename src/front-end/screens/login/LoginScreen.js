@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+// Imports from internal files
 import { firebase } from '../../../back-end/firebase/config'
 import Logos from '../../../components/Logo/logos';
+import loginStyles from '../../../style/login/login'
 
 /**
  * This function is to create the login screen
@@ -51,14 +54,16 @@ export default function LoginScreen({ navigation }) {
 
     //The view of the login screen
     return (
-        <View style={styles.container}>
+        <View style={loginStyles.container}>
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 <Logos />
+                <Text style={loginStyles.welcome}>Welcome</Text>
+                <Text style={loginStyles.signIn}>Sign In</Text>
                 <TextInput
                     //The email text input 
-                    style={styles.input}
+                    style={loginStyles.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setEmail(text)}
@@ -68,7 +73,7 @@ export default function LoginScreen({ navigation }) {
                 />
                 <TextInput
                     //The password text input
-                    style={styles.input}
+                    style={loginStyles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
                     placeholder='Password'
@@ -79,67 +84,14 @@ export default function LoginScreen({ navigation }) {
                 />
                 <TouchableOpacity
                     //Login button pressed method to check the credentials with firebase is called
-                    style={styles.button}
+                    style={loginStyles.button}
                     onPress={() => onLoginPress()}>
-                    <Text style={styles.buttonTitle}>Log in</Text>
+                    <Text style={loginStyles.buttonTitle}>Log in</Text>
                 </TouchableOpacity>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+                <View style={loginStyles.footerView}>
+                    <Text style={loginStyles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={loginStyles.footerLink}>Sign up</Text></Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>
     )
 }
-
-/**
- * Styling of the login screen
- */
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center'
-    },
-    title: {
-
-    },
-    input: {
-        height: 50,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 5,
-        marginBottom: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingLeft: 16
-    },
-    button: {
-        backgroundColor: '#9AC4F8',
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
-        height: 48,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: 'center'
-    },
-    buttonTitle: {
-        color: 'white',
-        fontSize: 20,
-        fontWeight: "bold"
-    },
-    footerView: {
-        flex: 1,
-        alignItems: "center",
-        marginTop: 30
-    },
-    footerText: {
-        fontSize: 16,
-        color: '#2e2e2d'
-    },
-    footerLink: {
-        color: "#9AC4F8",
-        fontWeight: "bold",
-        fontSize: 16
-    }
-})

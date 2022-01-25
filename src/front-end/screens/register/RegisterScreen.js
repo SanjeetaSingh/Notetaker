@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View, StyleSheet} from 'react-native'
+import React, { useState } from 'react';
+import { Text, TextInput, TouchableOpacity, View, StyleSheet} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { firebase } from '../../../back-end/firebase/config'
+
+// Imports from internal files
+import { firebase } from '../../../back-end/firebase/config';
 import Logos from '../../../components/Logo/logos';
+import registerStyle from '../../../style/registration/register'
 
 /**
  * This function is to create the register screen
@@ -58,14 +61,16 @@ export default function RegistrationScreen({navigation}) {
 
     //The view of the registration screen
     return (
-        <View style={styles.container}>
+        <View style={registerStyle.container}>
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 <Logos/>
+                <Text style={registerStyle.welcome}>Welcome</Text>
+                <Text style={registerStyle.signUp}>Sign Up</Text>
                 <TextInput
                 //The full name text input
-                    style={styles.input}
+                    style={registerStyle.input}
                     placeholder='Full Name'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setFullName(text)}
@@ -74,7 +79,7 @@ export default function RegistrationScreen({navigation}) {
                 />
                 <TextInput
                 //The email text input
-                    style={styles.input}
+                    style={registerStyle.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setEmail(text)}
@@ -84,7 +89,7 @@ export default function RegistrationScreen({navigation}) {
                 />
                 <TextInput
                 //The password text input
-                    style={styles.input}
+                    style={registerStyle.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
                     placeholder='Password'
@@ -95,7 +100,7 @@ export default function RegistrationScreen({navigation}) {
                 />
                 <TextInput
                 //The confirm password text input
-                    style={styles.input}
+                    style={registerStyle.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
                     placeholder='Confirm Password'
@@ -106,71 +111,14 @@ export default function RegistrationScreen({navigation}) {
                 />
                 <TouchableOpacity
                     //Register button pressed method to check the credentials and add to firebase is called
-                    style={styles.button}
+                    style={registerStyle.button}
                     onPress={() => onRegisterPress()}>
-                    <Text style={styles.buttonTitle}>Create account</Text>
+                    <Text style={registerStyle.buttonTitle}>Create account</Text>
                 </TouchableOpacity>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
+                <View style={registerStyle.footerView}>
+                    <Text style={registerStyle.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={registerStyle.footerLink}>Log in</Text></Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>
     )
 }
-
-/**
- * Styling of the register screen
- */
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center'
-    },
-    logo: {
-        flex: 1,
-        height: 120,
-        width: 250,
-        alignSelf: "center",
-        margin: 30
-    },
-    input: {
-        height: 50,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 5,
-        marginBottom: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingLeft: 16
-    },
-    button: {
-        backgroundColor: '#9AC4F8',
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
-        height: 48,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: 'center'
-    },
-    buttonTitle: {
-        color: 'white',
-        fontSize: 20,
-        fontWeight: "bold"
-    },
-    footerView: {
-        flex: 1,
-        alignItems: "center",
-        marginTop: 30
-    },
-    footerText: {
-        fontSize: 16,
-        color: '#2e2e2d'
-    },
-    footerLink: {
-        color: "#9AC4F8",
-        fontWeight: "bold",
-        fontSize: 16
-    }
-})
