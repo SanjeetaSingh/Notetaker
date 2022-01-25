@@ -5,7 +5,7 @@ import { Provider as PaperProvider, DefaultTheme as PaperDefaultTheme, DarkTheme
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from "@react-navigation/stack";
-import { Alert, View, Text } from 'react-native';
+import { Alert, View } from 'react-native';
 import { useSelector } from "react-redux";
 import firebase from 'firebase'
 
@@ -18,6 +18,7 @@ import LoginScreen from '../front-end/screens/login/LoginScreen';
 import RegistrationScreen from '../front-end/screens/register/RegisterScreen';
 import About from '../front-end/screens/main/About'
 import Update from '../front-end/screens/main/Update'
+import Search from '../front-end/screens/main/Search'
 
 //constants created for the tab navigation and stack navigation
 const Tab = createBottomTabNavigator();
@@ -64,6 +65,11 @@ const MainNavigator = (nav) => {
       }}>
         {props => (<AddNote{...props} extraData={nav.extraData} />)}
       </Stack.Screen>
+
+      <Stack.Screen name='Search' >
+        {props => (<Search{...props} extraData={nav.extraData} />)}
+      </Stack.Screen>
+
     </Stack.Navigator>
   );
 }
@@ -76,7 +82,7 @@ const MainNavigator = (nav) => {
 const PhotoNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Camera" component={camera} />
+      <Stack.Screen name="Camera" component={camera} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -117,7 +123,7 @@ const Menu = (nav) => {
           labelStyle: {
             fontSize: 20,
           },
-          
+
         }
       }}
     >
@@ -214,8 +220,8 @@ export default () => {
           ) : (
             <>
               {/* Adding the login and register screen to the stack */}
-              <LoginRegisterStack.Screen name="Login" component={LoginScreen} />
-              <LoginRegisterStack.Screen name="Registration" component={RegistrationScreen} />
+              <LoginRegisterStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+              <LoginRegisterStack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }} />
             </>
           )}
         </LoginRegisterStack.Navigator>
