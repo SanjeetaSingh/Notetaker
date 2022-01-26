@@ -2,7 +2,7 @@
 
 A React Naitve Notetaking Application that uses Firebase as a database and user authentication. 
 
-##### Screens
+## Screens
 
 * Login - user must login to access account. 
 * Register - user can register an account and have their details stored. 
