@@ -1,6 +1,8 @@
 ## How to run 
 
 - Clone project
+- Create an .env file and add the firebase credentials to the file 
+- run command "npm i" or "npm install"
 - run command "npm start" 
 - run on expo iOS simulator or on device
 

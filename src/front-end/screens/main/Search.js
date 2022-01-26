@@ -3,7 +3,10 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { SearchBar, Icon, ListItem } from 'react-native-elements';
 import { firebase } from '../../../back-end/firebase/config'
 import { useTheme, useNavigation } from '@react-navigation/native';
+
+// imports from internal file
 import Info from '../../../components/Headers/info'
+import styles from '../../../style/main-screens/search'
 
 /**
  * This screen lets the user search their notes 
@@ -123,16 +126,3 @@ export default function Search(props) {
         </View>
     );
 }
-
-/**
- * The styling of the screen
- */
-const styles = StyleSheet.create({
-    content: {
-        marginLeft: 20,
-        marginRight: 20,
-        backgroundColor: "#91C0D4",
-        borderRadius: 5,
-        color:'#fff'
-    },
-});
